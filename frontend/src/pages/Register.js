@@ -1,0 +1,79 @@
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
+import { toast } from 'react-toastify';
+
+const Register = () => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('customer'); // Default to customer
+    const { register } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await register(name, email, password, role);
+            toast.success('Registration successful!');
+            
+            if (role === 'admin') navigate('/admin');
+            else if (role === 'partner') navigate('/partner');
+            else navigate('/customer');
+            
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Registration failed');
+        }
+    };
+
+    return (
+        <div style={{ maxWidth: '400px', margin: '3rem auto' }} className="card">
+            <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Register</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="input-group">
+                    <input 
+                        type="text" 
+                        placeholder="Full Name" 
+                        value={name} 
+                        onChange={(e) => setName(e.target.value)} 
+                        required 
+                    />
+                </div>
+                <div className="input-group">
+                    <input 
+                        type="email" 
+                        placeholder="Email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        required 
+                    />
+                </div>
+                <div className="input-group">
+                    <input 
+                        type="password" 
+                        placeholder="Password" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        required 
+                    />
+                </div>
+                <div className="input-group">
+                    <select 
+                        value={role} 
+                        onChange={(e) => setRole(e.target.value)}
+                        style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--border-radius)', border: '1px solid #e2e8f0' }}
+                    >
+                        <option value="customer">Customer</option>
+                        <option value="partner">Delivery Partner</option>
+                        {/* Admin usually created manually or via secret */}
+                    </select>
+                </div>
+                <button type="submit" className="btn-primary" style={{ width: '100%' }}>
+                    Register
+                </button>
+            </form>
+        </div>
+    );
+};
+
+export default Register;
