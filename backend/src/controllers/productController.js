@@ -23,26 +23,16 @@ const getProductById = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  const { name, description, price, image, category, stock } = req.body;
+  const products = req.body;
 
   try {
-    const product = new Product({
-      name,
-      description,
-      price,
-      image,
-      category,
-      stock,
-    });
-
-    const createdProduct = await product.save();
-    res.status(201).json(createdProduct);
+    await Product.insertMany(products);
+    res.status(201).json({ message: "Product created successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// @access  Private/Admin
 const updateProduct = async (req, res) => {
   const { name, description, price, image, category, stock } = req.body;
 
