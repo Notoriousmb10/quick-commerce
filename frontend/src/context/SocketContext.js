@@ -10,13 +10,15 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      const newSocket = io("http://localhost:5000");
+      const newSocket = io("/", {
+        path: "/socket.io",
+        transports: ["websocket"],
+      });
+
       setSocket(newSocket);
       console.log("Socket Connected");
 
-      return () => {
-        newSocket.disconnect();
-      };
+      return () => newSocket.disconnect();
     } else {
       setSocket(null);
     }
