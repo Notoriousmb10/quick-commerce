@@ -207,6 +207,37 @@ const getOrderById = async (req, res) => {
   }
 };
 
+const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (order.customer.toString() !== req.user.id) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    if (order.status !== "placed") {
+      return res
+        .status(400)
+        .json({ message: "Cannot cancel order that is already processed" });
+    }
+
+    await Order.findByIdAndDelete(req.params.id);
+    const io = req.app.get("io");
+    io.emit("order_cancelled", { orderId: order._id });
+    io.emit("admin_order_update", {
+      orderId: order._id,
+      status: "cancelled",
+    });
+    res.json({ message: "Order removed" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   placeOrder,
   getOrders,
@@ -215,4 +246,5 @@ module.exports = {
   acceptOrder,
   updateOrderStatus,
   getOrderById,
+  deleteOrder,
 };

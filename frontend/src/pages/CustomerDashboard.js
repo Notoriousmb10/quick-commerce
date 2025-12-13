@@ -96,6 +96,12 @@ const CustomerDashboard = () => {
               {activeOrder.status}
             </span>
           </p>
+          <p>
+            List all your Orders at{" "}
+            <a style={{ color: "var(--primary-color)" }} href="/orders">
+              Orders
+            </a>
+          </p>
           {activeOrder.deliveryPartner && (
             <p>
               <strong>Delivery Partner:</strong>{" "}

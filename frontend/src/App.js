@@ -15,6 +15,7 @@ import { CartProvider } from "./context/CartContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CustomerDashboard from "./pages/CustomerDashboard";
+import Orders from "./pages/Orders";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
@@ -54,6 +55,15 @@ function App() {
                     element={
                       <ProtectedRoute allowedRoles={["customer"]}>
                         <CustomerDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path="/orders"
+                    element={
+                      <ProtectedRoute allowedRoles={["customer"]}>
+                        <Orders />
                       </ProtectedRoute>
                     }
                   />

@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import CartContext from "../context/CartContext";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const { itemCount, toggleCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -23,20 +25,49 @@ const Navbar = () => {
       }}
     >
       <Link
-        to="/"
+        to={
+          user?.role === "customer"
+            ? "/customer"
+            : user?.role === "partner"
+            ? "/partner"
+            : "/"
+        }
         style={{
           textDecoration: "none",
-          color: "var(--primary-color)",
+          color: "red",
           fontSize: "1.5rem",
           fontWeight: "bold",
         }}
       >
-        QuickCommerce
+        Yashomato
       </Link>
 
-      <div>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {user
+          ? user?.role === "customer" && (
+              <div className="cart-icon-container" onClick={toggleCart}>
+                <span style={{ fontSize: "1.5rem" }}>🛒</span>
+                {itemCount > 0 && (
+                  <span className="cart-badge">{itemCount}</span>
+                )}
+              </div>
+            )
+          : null}
+
         {user ? (
           <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            {user?.role === "customer" && (
+              <Link
+                to="/orders"
+                style={{
+                  textDecoration: "none",
+                  color: "var(--primary-color)",
+                  fontWeight: "600",
+                }}
+              >
+                My Orders
+              </Link>
+            )}
             <span style={{ color: "var(--text-secondary)" }}>
               Hello, {user.name} ({user.role})
             </span>
