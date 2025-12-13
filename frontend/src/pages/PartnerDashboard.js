@@ -18,29 +18,29 @@ const PartnerDashboard = () => {
 
   // Socket Listeners
   useEffect(() => {
-    if (socket.current) {
+    if (socket) {
       console.log("Setting up socket listeners...");
 
-      socket.current.on("new_order_available", (order) => {
+      socket.on("new_order_available", (order) => {
         console.log("new order received");
         setAvailableOrders((prev) => [...prev, order]);
         toast.info("New Order Available!");
       });
 
-      socket.current.on("order_cancelled", ({ orderId }) => {
+      socket.on("order_cancelled", ({ orderId }) => {
         fetchAvailableOrders();
         toast.info(`Order ${orderId.slice(-6)} was cancelled`);
       });
 
       // Order accepted by someone (remove from list)
-      socket.current.on("order_accepted_by_partner", ({ orderId }) => {
+      socket.on("order_accepted_by_partner", ({ orderId }) => {
         setAvailableOrders((prev) => prev.filter((o) => o._id !== orderId));
       });
 
       return () => {
-        socket.current.off("new_order_available");
-        socket.current.off("order_accepted_by_partner");
-        socket.current.off("order_cancelled");
+        socket.off("new_order_available");
+        socket.off("order_accepted_by_partner");
+        socket.off("order_cancelled");
       };
     }
   }, [socket]);

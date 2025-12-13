@@ -14,8 +14,8 @@ const Orders = () => {
   }, []);
 
   useEffect(() => {
-    if (socket.current) {
-      socket.current.on("order_update", (updatedOrder) => {
+    if (socket) {
+      socket.on("order_update", (updatedOrder) => {
         setOrders((prevOrders) =>
           prevOrders.map((o) => (o._id === updatedOrder._id ? updatedOrder : o))
         );
@@ -25,7 +25,7 @@ const Orders = () => {
       });
 
       return () => {
-        socket.current.off("order_update");
+        socket.off("order_update");
       };
     }
   }, [socket]);
@@ -48,7 +48,7 @@ const Orders = () => {
   const handleCancelOrder = async (orderId) => {
     try {
       await API.delete(`/orders/${orderId}`);
-      socket.current.emit("cancel_order");
+      // socket.emit("cancel_order"); // Backend now handles emission in deleteOrder controller
       toast.success("Order Cancelled");
       setOrders((prev) => prev.filter((o) => o._id !== orderId));
     } catch (error) {

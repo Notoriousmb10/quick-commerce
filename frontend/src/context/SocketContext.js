@@ -1,24 +1,24 @@
-import React, { createContext, useRef, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { io } from "socket.io-client";
 import AuthContext from "./AuthContext";
 
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
-  const socket = useRef();
+  const [socket, setSocket] = useState(null);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (user) {
-      socket.current = io("http://localhost:5000");
+      const newSocket = io("http://localhost:5000");
+      setSocket(newSocket);
       console.log("Socket Connected");
 
-      if (user.role === "partner") {
-      }
+      return () => {
+        newSocket.disconnect();
+      };
     } else {
-      if (socket.current) {
-        socket.current.disconnect();
-      }
+      setSocket(null);
     }
   }, [user]);
 

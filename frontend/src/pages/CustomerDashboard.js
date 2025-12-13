@@ -35,16 +35,16 @@ const CustomerDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (socket.current && activeOrder) {
-      socket.current.emit("join_room", `order_${activeOrder._id}`);
+    if (socket && activeOrder) {
+      socket.emit("join_room", `order_${activeOrder._id}`);
 
-      socket.current.on("order_update", (updatedOrder) => {
+      socket.on("order_update", (updatedOrder) => {
         setActiveOrder(updatedOrder);
         toast.info(`Order Status Updated: ${updatedOrder.status}`);
       });
 
       return () => {
-        socket.current.off("order_update");
+        socket.off("order_update");
       };
     }
   }, [socket, activeOrder]);
