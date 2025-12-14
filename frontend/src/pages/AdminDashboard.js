@@ -12,8 +12,8 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (socket.current) {
-      socket.current.on("admin_new_order", (order) => {
+    if (socket) {
+      socket.on("admin_new_order", (order) => {
         setOrders((prev) => [order, ...prev]);
         toast.info(`New Order Placed: #${order._id.slice(-6)}`);
       });
@@ -25,8 +25,8 @@ const AdminDashboard = () => {
       });
 
       return () => {
-        socket.current.off("admin_new_order");
-        socket.current.off("admin_order_update");
+        socket.off("admin_new_order");
+        socket.off("admin_order_update");
       };
     }
   }, [socket]);

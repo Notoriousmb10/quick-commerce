@@ -9,8 +9,7 @@ const PartnerDashboard = () => {
   const socket = useContext(SocketContext);
   const [availableOrders, setAvailableOrders] = useState([]);
   const [activeDelivery, setActiveDelivery] = useState(null);
-
-  // Initial Fetch
+  const [completedDeliveries, setCompletedDeliveries] = useState([]);
   useEffect(() => {
     fetchAvailableOrders();
     fetchMyActiveDelivery();
@@ -61,7 +60,9 @@ const PartnerDashboard = () => {
       const active = data.find(
         (o) => !["delivered", "cancelled"].includes(o.status)
       );
+      const delivered = data.filter((o) => o.status === "delivered");
       if (active) setActiveDelivery(active);
+      if (delivered) setCompletedDeliveries(delivered);
     } catch (error) {
       console.error(error);
     }
