@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,7 +8,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { AuthProvider } from "./context/AuthContext";
+import AuthContext, { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
 import { CartProvider } from "./context/CartContext";
 
@@ -22,9 +22,19 @@ import Navbar from "./components/Navbar";
 import CartDrawer from "./components/CartDrawer";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user, loading } = useContext(AuthContext);
   const token = localStorage.getItem("token");
-  if (!token) {
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!token || !user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to={`/${user.role}`} replace />;
   }
 
   return children;
