@@ -94,7 +94,7 @@ docker-compose up --build
 
 ### SSH / Server Login (If deploying)
 ```bash
-ssh user@your-server-ip
+ssh -i pem key user@your-server-ip (Mention your aws ip if you deploy) 
 # Follow the clone and docker-compose steps above
 ```
 
