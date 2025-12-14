@@ -15,7 +15,6 @@ const PartnerDashboard = () => {
     fetchMyActiveDelivery();
   }, []);
 
-  // Socket Listeners
   useEffect(() => {
     if (socket) {
       console.log("Setting up socket listeners...");
@@ -31,7 +30,6 @@ const PartnerDashboard = () => {
         toast.info(`Order ${orderId.slice(-6)} was cancelled`);
       });
 
-      // Order accepted by someone (remove from list)
       socket.on("order_accepted_by_partner", ({ orderId }) => {
         setAvailableOrders((prev) => prev.filter((o) => o._id !== orderId));
       });
@@ -56,7 +54,7 @@ const PartnerDashboard = () => {
   const fetchMyActiveDelivery = async () => {
     try {
       const { data } = await API.get("/orders/my-deliveries");
-      // Find one that is active
+
       const active = data.find(
         (o) => !["delivered", "cancelled"].includes(o.status)
       );
@@ -79,7 +77,7 @@ const PartnerDashboard = () => {
         error.response?.data?.message ||
           "Failed to accept order (maybe already taken)"
       );
-      fetchAvailableOrders(); // Refresh to sync
+      fetchAvailableOrders();
     }
   };
 
@@ -93,7 +91,7 @@ const PartnerDashboard = () => {
       toast.success(`Status updated to ${status}`);
       if (status === "delivered") {
         setActiveDelivery(null);
-        fetchAvailableOrders(); // Go back to pool
+        fetchAvailableOrders();
       }
     } catch (error) {
       console.error(error);
@@ -184,6 +182,56 @@ const PartnerDashboard = () => {
           )}
         </div>
       )}
+
+      <div className="card" style={{ marginTop: "2rem" }}>
+        <h3>Delivered Orders History</h3>
+        {completedDeliveries.length === 0 ? (
+          <p>No delivered orders yet.</p>
+        ) : (
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr
+                style={{ borderBottom: "2px solid #e2e8f0", textAlign: "left" }}
+              >
+                <th style={{ padding: "1rem" }}>Order ID</th>
+                <th style={{ padding: "1rem" }}>Customer</th>
+                <th style={{ padding: "1rem" }}>Address</th>
+                <th style={{ padding: "1rem" }}>Amount</th>
+                <th style={{ padding: "1rem" }}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {completedDeliveries.map((order) => (
+                <tr
+                  key={order._id}
+                  style={{ borderBottom: "1px solid #f1f5f9" }}
+                >
+                  <td style={{ padding: "1rem" }}>#{order._id.slice(-6)}</td>
+                  <td style={{ padding: "1rem" }}>{order.customer?.name}</td>
+                  <td style={{ padding: "1rem" }}>
+                    {order.deliveryLocation?.address}
+                  </td>
+                  <td style={{ padding: "1rem" }}>${order.totalAmount}</td>
+                  <td style={{ padding: "1rem" }}>
+                    <span
+                      style={{
+                        padding: "0.25rem 0.75rem",
+                        borderRadius: "9999px",
+                        background: "#dcfce7",
+                        color: "#166534",
+                        fontSize: "0.875rem",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

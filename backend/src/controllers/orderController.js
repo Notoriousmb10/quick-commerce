@@ -1,16 +1,6 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 
-// Helper to emit events
-const emitOrderUpdate = (io, orderId, data) => {
-  io.to(`order_${orderId}`).emit("order_update", data);
-  io.emit("admin_order_update", data);
-
-  if (data.status === "placed") {
-    io.emit("new_order_available", data);
-  }
-};
-
 const placeOrder = async (req, res) => {
   const { items, deliveryLocation } = req.body;
 

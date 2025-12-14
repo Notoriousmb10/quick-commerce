@@ -6,9 +6,10 @@ import { toast } from "react-toastify";
 const AdminDashboard = () => {
   const socket = useContext(SocketContext);
   const [orders, setOrders] = useState([]);
+  const [partners, setPartners] = useState([]);
 
   useEffect(() => {
-    fetchOrders();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -18,25 +19,46 @@ const AdminDashboard = () => {
         toast.info(`New Order Placed: #${order._id.slice(-6)}`);
       });
 
-      socket.current.on("admin_order_update", (updatedOrder) => {
+      socket.on("admin_order_update", (updatedOrder) => {
         setOrders((prev) =>
           prev.map((o) => (o._id === updatedOrder._id ? updatedOrder : o))
         );
+      });
+      socket.on("order_cancelled", ({ orderId }) => {
+        console.log("Order Cancelled", orderId);
+        fetchData();
+        toast.info(`Order ${orderId.slice(-6)} was cancelled`);
       });
 
       return () => {
         socket.off("admin_new_order");
         socket.off("admin_order_update");
+        socket.off("order_cancelled");
       };
     }
   }, [socket]);
 
-  const fetchOrders = async () => {
+  const fetchData = async () => {
     try {
-      const { data } = await API.get("/orders");
-      setOrders(data);
+      const ordersRes = await API.get("/orders");
+      const partnersRes = await API.get("/users/partners");
+      setOrders(ordersRes.data);
+      setPartners(partnersRes.data);
     } catch (error) {
       console.error(error);
+      toast.error("Failed to fetch dashboard data");
+    }
+  };
+
+  const deletePartner = async (id) => {
+    if (window.confirm("Are you sure you want to remove this partner?")) {
+      try {
+        await API.delete(`/users/${id}`);
+        setPartners(partners.filter((p) => p._id !== id));
+        toast.success("Partner removed successfully");
+      } catch (error) {
+        toast.error("Failed to remove partner");
+      }
     }
   };
 
@@ -145,6 +167,88 @@ const AdminDashboard = () => {
           ))}
         </tbody>
       </table>
+
+      <div style={{ marginTop: "3rem" }}>
+        <h3>Delivery Partners Management</h3>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            background: "white",
+            borderRadius: "8px",
+            overflow: "hidden",
+            boxShadow: "var(--shadow)",
+          }}
+        >
+          <thead style={{ background: "#f1f5f9" }}>
+            <tr>
+              <th style={{ padding: "1rem", textAlign: "left" }}>Name</th>
+              <th style={{ padding: "1rem", textAlign: "left" }}>Email</th>
+              <th style={{ padding: "1rem", textAlign: "left" }}>Status</th>
+              <th style={{ padding: "1rem", textAlign: "left" }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {partners.length === 0 ? (
+              <tr>
+                <td
+                  colSpan="4"
+                  style={{ padding: "1rem", textAlign: "center" }}
+                >
+                  No active delivery partners found.
+                </td>
+              </tr>
+            ) : (
+              partners.map((partner) => (
+                <tr
+                  key={partner._id}
+                  style={{ borderBottom: "1px solid #e2e8f0" }}
+                >
+                  <td style={{ padding: "1rem" }}>{partner.name}</td>
+                  <td style={{ padding: "1rem" }}>{partner.email}</td>
+                  <td style={{ padding: "1rem" }}>
+                    <span
+                      style={{
+                        padding: "0.25rem 0.5rem",
+                        borderRadius: "4px",
+                        fontSize: "0.875rem",
+                        fontWeight: "bold",
+                        background:
+                          partner.status === "available"
+                            ? "#d1fae5"
+                            : "#f1f5f9",
+                        color:
+                          partner.status === "available"
+                            ? "#065f46"
+                            : "#64748b",
+                      }}
+                    >
+                      {partner.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: "1rem" }}>
+                    <button
+                      onClick={() => deletePartner(partner._id)}
+                      style={{
+                        background: "#fee2e2",
+                        color: "#991b1b",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "6px",
+                        border: "none",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        fontSize: "0.875rem",
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
