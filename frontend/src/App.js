@@ -28,9 +28,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     return <div>Loading...</div>;
   }
 
-  const token = localStorage.getItem("token");
-
-  if (!token || !user || !user.role) {
+  if (!user?.role) {
     return <Navigate to="/login" replace />;
   }
 

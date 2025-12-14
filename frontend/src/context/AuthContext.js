@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 import API from "../api/axios";
 
 const AuthContext = createContext();
@@ -10,25 +9,28 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUser({ ...decoded, token });
-        API.get("/auth/me")
-          .then((res) => setUser({ ...res.data, token: token }))
-          .catch(() => logout());
-      } catch (e) {
-        logout();
-      }
+
+    if (!token) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    API.get("/auth/me")
+      .then((res) => {
+        setUser({ ...res.data, token });
+      })
+      .catch(() => logout())
+      .finally(() => setLoading(false));
   }, []);
 
   const login = async (email, password) => {
     const { data } = await API.post("/auth/login", { email, password });
+
     localStorage.setItem("token", data.token);
-    setUser(data);
-    return data;
+
+    setUser({ ...data.user, token: data.token });
+
+    return data.user;
   };
 
   const register = async (name, email, password, role) => {
@@ -38,8 +40,9 @@ export const AuthProvider = ({ children }) => {
       password,
       role,
     });
+
     localStorage.setItem("token", data.token);
-    setUser(data);
+    setUser({ ...data.user, token: data.token });
   };
 
   const logout = () => {
