@@ -30,6 +30,8 @@ const Navbar = () => {
             ? "/customer"
             : user?.role === "partner"
             ? "/partner"
+            : user?.role === "admin"
+            ? "/admin"
             : "/"
         }
         style={{
