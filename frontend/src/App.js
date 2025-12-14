@@ -23,13 +23,14 @@ import CartDrawer from "./components/CartDrawer";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useContext(AuthContext);
-  const token = localStorage.getItem("token");
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!token || !user) {
+  const token = localStorage.getItem("token");
+
+  if (!token || !user || !user.role) {
     return <Navigate to="/login" replace />;
   }
 
@@ -48,6 +49,7 @@ function App() {
           <CartProvider>
             <div className="App">
               <Navbar />
+
               <div
                 className="container"
                 style={{
@@ -96,10 +98,12 @@ function App() {
                     }
                   />
 
-                  <Route path="/" element={<Navigate to="/login" />} />
+                  <Route path="/" element={<Navigate to="/login" replace />} />
                 </Routes>
+
                 <ToastContainer position="bottom-right" />
               </div>
+
               <CartDrawer />
             </div>
           </CartProvider>
