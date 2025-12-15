@@ -41,7 +41,7 @@ const Navbar = () => {
           fontWeight: "bold",
         }}
       >
-        Yashomato
+        QuickMato
       </Link>
 
       <div style={{ display: "flex", alignItems: "center" }}>

@@ -1,4 +1,4 @@
-# Quick Commerce Platform (Yashomato)
+# Quick Commerce Platform (QuickMato)
 
 ## 1. Project Overview
 
