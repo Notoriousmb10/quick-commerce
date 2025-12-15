@@ -41,7 +41,7 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Quick Commerce API Running");
 });
 
