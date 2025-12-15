@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const LoginLog = require("../models/Login");
 const jwt = require("jsonwebtoken");
 
 const generateToken = (id) => {
@@ -24,6 +25,13 @@ const registerUser = async (req, res) => {
       role: role || "customer",
     });
 
+    await LoginLog.create({
+      user: user._id,
+      role: user.role,
+      ipAddress: req.ip,
+      userAgent: req.get("User-Agent"),
+    });
+
     if (user) {
       res.status(201).json({
         _id: user.id,
@@ -47,6 +55,13 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email }).select("+password");
 
     if (user && (await user.matchPassword(password))) {
+      await LoginLog.create({
+        user: user._id,
+        role: user.role,
+        ipAddress: req.ip,
+        userAgent: req.get("User-Agent"),
+      });
+
       res.json({
         _id: user.id,
         name: user.name,
