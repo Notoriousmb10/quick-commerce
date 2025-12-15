@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AuthContext, { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
 import { CartProvider } from "./context/CartContext";
+import { ProtectedRoute, PublicRoute } from "./components/RouteGuards";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -21,23 +22,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
 import CartDrawer from "./components/CartDrawer";
 
-const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { user, loading } = useContext(AuthContext);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
-  if (!user?.role) {
-    return <Navigate to="/login" replace />;
-  }
 
-  if (!allowedRoles.includes(user.role)) {
-    return <Navigate to={`/${user.role}`} replace />;
-  }
-
-  return children;
-};
 
 function App() {
   return (
@@ -57,8 +44,22 @@ function App() {
                 }}
               >
                 <Routes>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
+                  <Route
+                    path="/login"
+                    element={
+                      <PublicRoute>
+                        <Login />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <PublicRoute>
+                        <Register />
+                      </PublicRoute>
+                    }
+                  />
 
                   <Route
                     path="/customer"

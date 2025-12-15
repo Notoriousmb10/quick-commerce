@@ -15,6 +15,7 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      console.log('fetch products');
       try {
         const { data } = await API.get("/products");
         setProducts(data);
