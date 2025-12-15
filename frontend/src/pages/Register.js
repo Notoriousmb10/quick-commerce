@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
@@ -7,19 +7,37 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('customer'); // Default to customer
+    const [role, setRole] = useState('customer');
     const { register } = useContext(AuthContext);
-    const navigate = useNavigate();
+
+
+
+    const validateForm = () => {
+        if (name.trim().length < 2) {
+            toast.error("Name must be at least 2 characters long");
+            return false;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid email");
+            return false;
+        }
+        if (password.length < 6) {
+            toast.error("Password must be at least 6 characters long");
+            return false;
+        }
+        return true;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) return;
+
         try {
             await register(name, email, password, role);
             toast.success('Registration successful!');
             
-            if (role === 'admin') navigate('/admin');
-            else if (role === 'partner') navigate('/partner');
-            else navigate('/customer');
+
             
         } catch (error) {
             toast.error(error.response?.data?.message || 'Registration failed');

@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { toast } from "react-toastify";
 
@@ -10,14 +10,24 @@ const Login = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) {
-      navigate(`/${user?.role}`);
+  
+  const validateForm = () => {
+    if (!email || !password) {
+      toast.error("All fields are required");
+      return false;
     }
-  }, [user, navigate]);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email");
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
       const data = await login(email, password);
       toast.success(`Welcome back, ${data.name}!`);
@@ -25,6 +35,7 @@ const Login = () => {
       if (data.role === "admin") navigate("/admin");
       else if (data.role === "partner") navigate("/partner");
       else navigate("/customer");
+
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     }
