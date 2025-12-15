@@ -101,18 +101,36 @@ ssh -i pem key user@your-server-ip (Mention your aws ip if you deploy)
 
 ## 6. Hosting & Deployment Steps
 
-1.  **Provision a Server**:AWS EC2 (Ubuntu LTS recommended).
-2.  **Install Docker**:
+### Provision a Server
+Create an AWS EC2 instance (Ubuntu LTS recommended) and allow ports 22, 80, and 443 in the security group.
+
+### Install Docker & Docker Compose
+```bash
+sudo apt update
+sudo apt install docker.io docker-compose
+```
+
+### Initial Deployment (Manual)
+1.  **SSH** into the EC2 instance.
+2.  **Clone** the repository to the server.
+3.  **Configure production environment variables** in the backend.
+4.  Start the application using Docker Compose:
     ```bash
-    sudo apt update
-    sudo apt install docker.io docker-compose
+    docker-compose up -d --build
     ```
-3.  **Deploy**:
-    *   Clone your repo to the server.
-    *   Set up production `.env` variables.
-    *   Run `docker-compose up -d --build` to start in detached mode.
-4.  **Domain Setup**: Point your domain's A record to the server IP.
-5.  **SSL**: Use Certbot to generate SSL certificates (can be integrated into Nginx container).
+
+### Automated Deployment (GitHub Actions)
+An automated deployment pipeline is configured using GitHub Actions.
+*   The workflow triggers when a version tag (for example `v1.0.0`) is pushed to the repository.
+*   GitHub Actions connects to the EC2 instance using SSH credentials stored securely in GitHub Secrets.
+*   The server checks out the tagged release and rebuilds the Docker containers using Docker Compose.
+*   This allows deploying new versions without manually logging into the server each time.
+
+### Domain Setup (Optional)
+Point the domain’s A record to the EC2 public IP address.
+
+### SSL Configuration (Optional)
+HTTPS can be enabled using Certbot and Let’s Encrypt, either on the host machine or integrated with the Nginx container.
 
 ## 7. WebSocket Flow Explanation
 
