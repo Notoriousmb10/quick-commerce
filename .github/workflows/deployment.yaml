@@ -1,0 +1,44 @@
+name: Deploy to Server
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/server_key
+          chmod 600 ~/.ssh/server_key
+          ssh-keyscan -p $SSH_PORT $SSH_HOST >> ~/.ssh/known_hosts
+
+      - name: Deploy to Server
+        run: |
+          ssh -i ~/.ssh/server_key -p $SSH_PORT $SSH_USER@$SSH_HOST << 'EOF'
+            set -e
+            cd ~/quick-commerce
+
+            echo "Pulling latest release..."
+            git fetch --all --tags
+            git checkout ${{ github.ref_name }}
+
+            echo "Rebuilding containers..."
+            sudo docker-compose down
+            sudo docker-compose up -d --build
+
+            echo "Deployment complete!"
+          EOF
