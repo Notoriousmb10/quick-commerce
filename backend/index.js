@@ -45,10 +45,6 @@ app.get("/", (req, res) => {
   res.send("Quick Commerce API Running");
 });
 
-app.get("/api", (req, res) => {
-  res.send("Quick Commerce API Running");
-});
-
 app.use("/api/auth", require("./src/routes/authRoutes"));
 app.use("/api/products", require("./src/routes/productRoutes"));
 app.use("/api/orders", require("./src/routes/orderRoutes"));
