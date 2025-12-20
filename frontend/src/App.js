@@ -8,7 +8,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import AuthContext, { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
 import { CartProvider } from "./context/CartContext";
 import { ProtectedRoute, PublicRoute } from "./components/RouteGuards";
@@ -16,15 +16,12 @@ import { ProtectedRoute, PublicRoute } from "./components/RouteGuards";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CustomerDashboard from "./pages/CustomerDashboard";
+import LandingPage from "./pages/HomePage";
 import Orders from "./pages/Orders";
 import PartnerDashboard from "./pages/PartnerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
 import CartDrawer from "./components/CartDrawer";
-
-
-
-
 
 function App() {
   return (
@@ -45,6 +42,14 @@ function App() {
               >
                 <Routes>
                   <Route
+                    path="/home"
+                    element={
+                      <PublicRoute>
+                        <LandingPage />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
                     path="/login"
                     element={
                       <PublicRoute>
@@ -60,7 +65,6 @@ function App() {
                       </PublicRoute>
                     }
                   />
-
                   <Route
                     path="/customer"
                     element={
@@ -69,7 +73,6 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
-
                   <Route
                     path="/orders"
                     element={
