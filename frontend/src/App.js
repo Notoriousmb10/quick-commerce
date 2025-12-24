@@ -31,7 +31,6 @@ function App() {
           <CartProvider>
             <div className="App">
               <Navbar />
-
               <div
                 className="container"
                 style={{
@@ -100,7 +99,7 @@ function App() {
                     }
                   />
 
-                  <Route path="/" element={<Navigate to="/login" replace />} />
+                  <Route path="/" element={<Navigate to="/home" replace />} />
                 </Routes>
 
                 <ToastContainer position="bottom-right" />

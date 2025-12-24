@@ -1,16 +1,16 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { toast } from "react-toastify";
+import { Mail, Lock, LogIn } from "lucide-react";
+import "./Auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  
   const validateForm = () => {
     if (!email || !password) {
       toast.error("All fields are required");
@@ -35,38 +35,63 @@ const Login = () => {
       if (data.role === "admin") navigate("/admin");
       else if (data.role === "partner") navigate("/partner");
       else navigate("/customer");
-
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "3rem auto" }} className="card">
-      <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">Welcome Back</h2>
+        <p className="auth-subtitle">Sign in to continue to Quick Commerce</p>
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <input
+              type="email"
+              className="form-input"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <Mail className="input-icon" size={20} />
+          </div>
+
+          <div className="form-group">
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <Lock className="input-icon" size={20} />
+          </div>
+
+          <button type="submit" className="auth-btn">
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+              }}
+            >
+              Login <LogIn size={20} />
+            </span>
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          Don't have an account?
+          <Link to="/register" className="auth-link">
+            Sign up
+          </Link>
         </div>
-        <div className="input-group">
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="btn-primary" style={{ width: "100%" }}>
-          Login
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

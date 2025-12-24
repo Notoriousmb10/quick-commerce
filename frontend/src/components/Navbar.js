@@ -17,11 +17,17 @@ const Navbar = () => {
     <nav
       style={{
         background: "var(--card-bg)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid var(--card-border)",
         padding: "1rem 2rem",
         boxShadow: "var(--shadow)",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
       }}
     >
       <Link
@@ -36,9 +42,11 @@ const Navbar = () => {
         }
         style={{
           textDecoration: "none",
-          color: "red",
           fontSize: "1.5rem",
           fontWeight: "bold",
+          background: "linear-gradient(to right, #3b82f6, #10b981)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
         }}
       >
         QuickMato
@@ -63,8 +71,8 @@ const Navbar = () => {
                 to="/orders"
                 style={{
                   textDecoration: "none",
-                  color: "var(--primary-color)",
-                  fontWeight: "600",
+                  color: "var(--text-primary)",
+                  fontWeight: "500",
                 }}
               >
                 My Orders
@@ -90,7 +98,7 @@ const Navbar = () => {
               <button
                 style={{
                   background: "transparent",
-                  color: "var(--primary-color)",
+                  color: "white",
                   border: "1px solid var(--primary-color)",
                 }}
               >

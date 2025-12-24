@@ -10,6 +10,7 @@ const PartnerDashboard = () => {
   const [availableOrders, setAvailableOrders] = useState([]);
   const [activeDelivery, setActiveDelivery] = useState(null);
   const [completedDeliveries, setCompletedDeliveries] = useState([]);
+
   useEffect(() => {
     fetchAvailableOrders();
     fetchMyActiveDelivery();
@@ -98,33 +99,84 @@ const PartnerDashboard = () => {
     }
   };
 
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "delivered":
+        return "badge badge-success";
+      case "cancelled":
+        return "badge badge-danger";
+      case "picked_up":
+        return "badge badge-info";
+      case "on_way":
+        return "badge badge-warning";
+      default:
+        return "badge badge-info";
+    }
+  };
+
   return (
     <div>
-      <h1>Delivery Partner Dashboard</h1>
+      <h1 style={{ marginBottom: "2rem" }}>Delivery Partner Dashboard</h1>
 
       {activeDelivery ? (
         <div
           className="card"
           style={{
-            border: "2px solid var(--accent-color)",
-            background: "#ecfdf5",
+            border: "1px solid var(--secondary-color)",
+            boxShadow: "0 0 20px rgba(16, 185, 129, 0.2)",
           }}
         >
-          <h2>Current Delivery</h2>
-          <p>
-            <strong>Order ID:</strong> {activeDelivery._id}
-          </p>
-          <p>
-            <strong>Customer:</strong> {activeDelivery.customer?.name}
-          </p>
-          <p>
-            <strong>Address:</strong> {activeDelivery.deliveryLocation?.address}
-          </p>
-          <p>
-            <strong>Current Status:</strong> {activeDelivery.status}
-          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "1rem",
+            }}
+          >
+            <h2 style={{ margin: 0, color: "var(--secondary-color)" }}>
+              Current Delivery
+            </h2>
+            <span className={getStatusBadge(activeDelivery.status)}>
+              {activeDelivery.status}
+            </span>
+          </div>
 
-          <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1rem",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <div>
+              <p className="text-secondary" style={{ margin: "0 0 0.25rem 0" }}>
+                Order ID
+              </p>
+              <p style={{ margin: 0, fontWeight: "bold" }}>
+                #{activeDelivery._id.slice(-6)}
+              </p>
+            </div>
+            <div>
+              <p className="text-secondary" style={{ margin: "0 0 0.25rem 0" }}>
+                Customer
+              </p>
+              <p style={{ margin: 0, fontWeight: "bold" }}>
+                {activeDelivery.customer?.name}
+              </p>
+            </div>
+            <div style={{ gridColumn: "1 / -1" }}>
+              <p className="text-secondary" style={{ margin: "0 0 0.25rem 0" }}>
+                Delivery Address
+              </p>
+              <p style={{ margin: 0, fontWeight: "bold" }}>
+                {activeDelivery.deliveryLocation?.address}
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "1rem" }}>
             {activeDelivery.status === "accepted" && (
               <button
                 className="btn-primary"
@@ -153,25 +205,55 @@ const PartnerDashboard = () => {
         </div>
       ) : (
         <div>
-          <h3>Available Orders Pool</h3>
+          <h3 style={{ marginBottom: "1.5rem" }}>Available Orders Pool</h3>
           {availableOrders.length === 0 ? (
-            <p>No orders available. Waiting...</p>
+            <p className="text-secondary">
+              No orders available at the moment. Waiting for new orders...
+            </p>
           ) : (
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                gap: "1rem",
+                gap: "1.5rem",
               }}
             >
               {availableOrders.map((order) => (
                 <div key={order._id} className="card">
-                  <h4>Order #{order._id.slice(-6)}</h4>
-                  <p>Items: {order.items.length}</p>
-                  <p>Total: ${order.totalAmount}</p>
-                  <p>Location: {order.deliveryLocation?.address}</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <h4 style={{ margin: 0 }}>Order #{order._id.slice(-6)}</h4>
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "var(--primary-color)",
+                      }}
+                    >
+                      ${order.totalAmount}
+                    </span>
+                  </div>
+
+                  <div style={{ marginBottom: "1rem" }}>
+                    <p
+                      className="text-secondary"
+                      style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}
+                    >
+                      {order.items.length} items
+                    </p>
+                    <p style={{ fontSize: "0.9rem" }}>
+                      <span className="text-secondary">To: </span>
+                      {order.deliveryLocation?.address}
+                    </p>
+                  </div>
+
                   <button
                     className="btn-primary"
+                    style={{ width: "100%" }}
                     onClick={() => acceptOrder(order._id)}
                   >
                     Accept Order
@@ -184,53 +266,39 @@ const PartnerDashboard = () => {
       )}
 
       <div className="card" style={{ marginTop: "2rem" }}>
-        <h3>Delivered Orders History</h3>
-        {completedDeliveries.length === 0 ? (
-          <p>No delivered orders yet.</p>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr
-                style={{ borderBottom: "2px solid #e2e8f0", textAlign: "left" }}
-              >
-                <th style={{ padding: "1rem" }}>Order ID</th>
-                <th style={{ padding: "1rem" }}>Customer</th>
-                <th style={{ padding: "1rem" }}>Address</th>
-                <th style={{ padding: "1rem" }}>Amount</th>
-                <th style={{ padding: "1rem" }}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {completedDeliveries.map((order) => (
-                <tr
-                  key={order._id}
-                  style={{ borderBottom: "1px solid #f1f5f9" }}
-                >
-                  <td style={{ padding: "1rem" }}>#{order._id.slice(-6)}</td>
-                  <td style={{ padding: "1rem" }}>{order.customer?.name}</td>
-                  <td style={{ padding: "1rem" }}>
-                    {order.deliveryLocation?.address}
-                  </td>
-                  <td style={{ padding: "1rem" }}>${order.totalAmount}</td>
-                  <td style={{ padding: "1rem" }}>
-                    <span
-                      style={{
-                        padding: "0.25rem 0.75rem",
-                        borderRadius: "9999px",
-                        background: "#dcfce7",
-                        color: "#166534",
-                        fontSize: "0.875rem",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
+        <h3 style={{ marginBottom: "1.5rem" }}>Delivered Orders History</h3>
+        <div style={{ overflowX: "auto" }}>
+          {completedDeliveries.length === 0 ? (
+            <p className="text-secondary">No delivered orders yet.</p>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Address</th>
+                  <th>Amount</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {completedDeliveries.map((order) => (
+                  <tr key={order._id}>
+                    <td>#{order._id.slice(-6)}</td>
+                    <td>{order.customer?.name}</td>
+                    <td>{order.deliveryLocation?.address}</td>
+                    <td>${order.totalAmount}</td>
+                    <td>
+                      <span className="badge badge-success">
+                        {order.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );

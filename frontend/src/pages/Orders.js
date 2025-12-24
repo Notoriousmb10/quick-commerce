@@ -32,8 +32,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await API.get("/orders"); // Endpoint returns orders for logged-in user
-      // Sort by date desc
+      const { data } = await API.get("/orders");
       const sorted = data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
@@ -48,7 +47,6 @@ const Orders = () => {
   const handleCancelOrder = async (orderId) => {
     try {
       await API.delete(`/orders/${orderId}`);
-      // socket.emit("cancel_order"); // Backend now handles emission in deleteOrder controller
       toast.success("Order Cancelled");
       setOrders((prev) => prev.filter((o) => o._id !== orderId));
     } catch (error) {
@@ -61,25 +59,49 @@ const Orders = () => {
     setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
   };
 
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "delivered":
+        return "badge badge-success";
+      case "cancelled":
+        return "badge badge-danger";
+      case "placed":
+        return "badge badge-info";
+      case "active":
+        return "badge badge-success";
+      default:
+        return "badge badge-info";
+    }
+  };
+
   if (loading)
     return (
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "2rem",
+          color: "var(--text-secondary)",
+        }}
+      >
         Loading orders...
       </div>
     );
 
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-      <h1>My Orders</h1>
+      <h1 style={{ marginBottom: "2rem" }}>My Orders</h1>
       {orders.length === 0 ? (
         <div
+          className="card"
           style={{
             textAlign: "center",
+            padding: "3rem",
             color: "var(--text-secondary)",
-            marginTop: "2rem",
           }}
         >
-          <p>No orders found.</p>
+          <p style={{ margin: 0, fontSize: "1.1rem" }}>
+            No orders found yet. Start shopping!
+          </p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -95,7 +117,13 @@ const Orders = () => {
                 onClick={() => toggleExpand(order._id)}
               >
                 <div>
-                  <p style={{ margin: 0, fontWeight: "bold" }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontWeight: "bold",
+                      fontSize: "1.1rem",
+                    }}
+                  >
                     Order #{order._id.slice(-6)}
                   </p>
                   <p
@@ -108,23 +136,25 @@ const Orders = () => {
                     {new Date(order.createdAt).toLocaleString()}
                   </p>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <p style={{ margin: 0, fontWeight: "bold" }}>
-                    ${order.totalAmount}
-                  </p>
-                  <span
+                <div
+                  style={{
+                    textAlign: "right",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-end",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <p
                     style={{
-                      fontSize: "0.875rem",
-                      padding: "0.25rem 0.5rem",
-                      borderRadius: "4px",
-                      background:
-                        order.status === "delivered" ? "#d1fae5" : "#e0f2fe",
-                      color:
-                        order.status === "delivered" ? "#065f46" : "#0369a1",
-                      marginTop: "0.25rem",
-                      display: "inline-block",
+                      margin: 0,
+                      fontWeight: "bold",
+                      fontSize: "1.2rem",
                     }}
                   >
+                    ${order.totalAmount}
+                  </p>
+                  <span className={getStatusBadge(order.status)}>
                     {order.status}
                   </span>
                   {order.status === "placed" && (
@@ -132,19 +162,16 @@ const Orders = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
-                        console.log("Cancel clicked for:", order._id);
                         handleCancelOrder(order._id);
                       }}
                       className="btn-primary"
                       style={{
-                        background: "var(--danger-color)",
+                        background: "rgba(239, 68, 68, 0.2)",
+                        color: "#f87171",
+                        border: "1px solid rgba(239, 68, 68, 0.3)",
                         padding: "0.25rem 0.5rem",
                         fontSize: "0.75rem",
-                        marginLeft: "auto", // Align to right
-                        display: "block",
-                        marginTop: "0.5rem",
-                        zIndex: 10, // Ensure it's on top
-                        position: "relative",
+                        boxShadow: "none",
                       }}
                     >
                       Cancel
@@ -156,36 +183,53 @@ const Orders = () => {
               {expandedOrderId === order._id && (
                 <div
                   style={{
-                    marginTop: "1rem",
-                    borderTop: "1px solid #f1f5f9",
-                    paddingTop: "1rem",
+                    marginTop: "1.5rem",
+                    borderTop: "1px solid var(--card-border)",
+                    paddingTop: "1.5rem",
                   }}
                 >
-                  <h4 style={{ margin: "0 0 0.5rem 0" }}>Items</h4>
+                  <h4
+                    style={{
+                      margin: "0 0 1rem 0",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    Order Items
+                  </h4>
                   {order.items.map((item, idx) => (
                     <div
                       key={idx}
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        marginBottom: "0.5rem",
+                        marginBottom: "0.75rem",
+                        paddingBottom: "0.75rem",
+                        borderBottom: "1px solid rgba(255,255,255,0.05)",
                       }}
                     >
-                      <span>
-                        {item.product?.name || "Unknown Product"} x{" "}
-                        {item.quantity}
+                      <span style={{ color: "var(--text-primary)" }}>
+                        {item.product?.name || "Unknown Product"}{" "}
+                        <span style={{ color: "var(--text-secondary)" }}>
+                          x {item.quantity}
+                        </span>
                       </span>
-                      <span>${item.product?.price * item.quantity}</span>
+                      <span style={{ fontWeight: "500" }}>
+                        ${item.product?.price * item.quantity}
+                      </span>
                     </div>
                   ))}
                   <div
                     style={{
-                      textAlign: "right",
+                      display: "flex",
+                      justifyContent: "space-between",
                       marginTop: "1rem",
                       fontWeight: "bold",
+                      fontSize: "1.1rem",
+                      color: "var(--primary-color)",
                     }}
                   >
-                    Total: ${order.totalAmount}
+                    <span>Total Amount</span>
+                    <span>${order.totalAmount}</span>
                   </div>
                 </div>
               )}

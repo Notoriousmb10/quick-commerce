@@ -62,30 +62,52 @@ const AdminDashboard = () => {
     }
   };
 
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "delivered":
+        return "badge badge-success";
+      case "cancelled":
+        return "badge badge-danger";
+      case "active":
+        return "badge badge-success";
+      case "available":
+        return "badge badge-success";
+      default:
+        return "badge badge-info";
+    }
+  };
+
   return (
     <div>
-      <h1>Admin Dashboard - System Overview</h1>
+      <h1 style={{ marginBottom: "2rem" }}>Admin Dashboard</h1>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "1rem",
-          marginBottom: "2rem",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "1.5rem",
+          marginBottom: "3rem",
         }}
       >
         <div className="card">
-          <h3>Total Orders</h3>
-          <p style={{ fontSize: "2rem", fontWeight: "bold" }}>
+          <h3 className="text-secondary">Total Orders</h3>
+          <p
+            style={{
+              fontSize: "2.5rem",
+              fontWeight: "bold",
+              margin: "0.5rem 0",
+            }}
+          >
             {orders.length}
           </p>
         </div>
         <div className="card">
-          <h3>Active</h3>
+          <h3 className="text-secondary">Active</h3>
           <p
             style={{
-              fontSize: "2rem",
+              fontSize: "2.5rem",
               fontWeight: "bold",
-              color: "var(--secondary-color)",
+              margin: "0.5rem 0",
+              color: "var(--primary-color)",
             }}
           >
             {
@@ -96,158 +118,124 @@ const AdminDashboard = () => {
           </p>
         </div>
         <div className="card">
-          <h3>Delivered</h3>
+          <h3 className="text-secondary">Delivered</h3>
           <p
             style={{
-              fontSize: "2rem",
+              fontSize: "2.5rem",
               fontWeight: "bold",
-              color: "var(--accent-color)",
+              margin: "0.5rem 0",
+              color: "var(--secondary-color)",
             }}
           >
             {orders.filter((o) => o.status === "delivered").length}
           </p>
         </div>
         <div className="card">
-          <h3>Revenue</h3>
-          <p style={{ fontSize: "2rem", fontWeight: "bold" }}>
+          <h3 className="text-secondary">Revenue</h3>
+          <p
+            style={{
+              fontSize: "2.5rem",
+              fontWeight: "bold",
+              margin: "0.5rem 0",
+            }}
+          >
             ${orders.reduce((acc, o) => acc + o.totalAmount, 0).toFixed(2)}
           </p>
         </div>
       </div>
 
-      <h3>Recent Orders</h3>
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          background: "white",
-          borderRadius: "8px",
-          overflow: "hidden",
-          boxShadow: "var(--shadow)",
-        }}
-      >
-        <thead style={{ background: "#f1f5f9" }}>
-          <tr>
-            <th style={{ padding: "1rem", textAlign: "left" }}>ID</th>
-            <th style={{ padding: "1rem", textAlign: "left" }}>Customer</th>
-            <th style={{ padding: "1rem", textAlign: "left" }}>Items</th>
-            <th style={{ padding: "1rem", textAlign: "left" }}>Total</th>
-            <th style={{ padding: "1rem", textAlign: "left" }}>Status</th>
-            <th style={{ padding: "1rem", textAlign: "left" }}>Partner</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order._id} style={{ borderBottom: "1px solid #e2e8f0" }}>
-              <td style={{ padding: "1rem" }}>{order._id.slice(-6)}</td>
-              <td style={{ padding: "1rem" }}>
-                {order.customer?.name || "Unknown"}
-              </td>
-              <td style={{ padding: "1rem" }}>{order.items.length} items</td>
-              <td style={{ padding: "1rem" }}>${order.totalAmount}</td>
-              <td style={{ padding: "1rem" }}>
-                <span
-                  style={{
-                    padding: "0.25rem 0.5rem",
-                    borderRadius: "4px",
-                    fontSize: "0.875rem",
-                    fontWeight: "bold",
-                    background:
-                      order.status === "delivered" ? "#d1fae5" : "#e0f2fe",
-                    color: order.status === "delivered" ? "#065f46" : "#0369a1",
-                  }}
-                >
-                  {order.status}
-                </span>
-              </td>
-              <td style={{ padding: "1rem" }}>
-                {order.deliveryPartner?.name || "-"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div style={{ marginTop: "3rem" }}>
-        <h3>Delivery Partners Management</h3>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            background: "white",
-            borderRadius: "8px",
-            overflow: "hidden",
-            boxShadow: "var(--shadow)",
-          }}
-        >
-          <thead style={{ background: "#f1f5f9" }}>
-            <tr>
-              <th style={{ padding: "1rem", textAlign: "left" }}>Name</th>
-              <th style={{ padding: "1rem", textAlign: "left" }}>Email</th>
-              <th style={{ padding: "1rem", textAlign: "left" }}>Status</th>
-              <th style={{ padding: "1rem", textAlign: "left" }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {partners.length === 0 ? (
+      <div className="card">
+        <h3 style={{ marginBottom: "1.5rem" }}>Recent Orders</h3>
+        <div style={{ overflowX: "auto" }}>
+          <table>
+            <thead>
               <tr>
-                <td
-                  colSpan="4"
-                  style={{ padding: "1rem", textAlign: "center" }}
-                >
-                  No active delivery partners found.
-                </td>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Partner</th>
               </tr>
-            ) : (
-              partners.map((partner) => (
-                <tr
-                  key={partner._id}
-                  style={{ borderBottom: "1px solid #e2e8f0" }}
-                >
-                  <td style={{ padding: "1rem" }}>{partner.name}</td>
-                  <td style={{ padding: "1rem" }}>{partner.email}</td>
-                  <td style={{ padding: "1rem" }}>
-                    <span
-                      style={{
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "4px",
-                        fontSize: "0.875rem",
-                        fontWeight: "bold",
-                        background:
-                          partner.status === "available"
-                            ? "#d1fae5"
-                            : "#f1f5f9",
-                        color:
-                          partner.status === "available"
-                            ? "#065f46"
-                            : "#64748b",
-                      }}
-                    >
-                      {partner.status}
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>#{order._id.slice(-6)}</td>
+                  <td>{order.customer?.name || "Unknown"}</td>
+                  <td>{order.items.length} items</td>
+                  <td>${order.totalAmount}</td>
+                  <td>
+                    <span className={getStatusBadge(order.status)}>
+                      {order.status}
                     </span>
                   </td>
-                  <td style={{ padding: "1rem" }}>
-                    <button
-                      onClick={() => deletePartner(partner._id)}
-                      style={{
-                        background: "#fee2e2",
-                        color: "#991b1b",
-                        padding: "0.5rem 1rem",
-                        borderRadius: "6px",
-                        border: "none",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                        fontSize: "0.875rem",
-                      }}
-                    >
-                      Delete
-                    </button>
+                  <td>{order.deliveryPartner?.name || "-"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: "2rem" }}>
+        <h3 style={{ marginBottom: "1.5rem" }}>Delivery Partners Management</h3>
+        <div style={{ overflowX: "auto" }}>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {partners.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="4"
+                    style={{
+                      padding: "2rem",
+                      textAlign: "center",
+                      fontStyle: "italic",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    No active delivery partners found.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                partners.map((partner) => (
+                  <tr key={partner._id}>
+                    <td>{partner.name}</td>
+                    <td>{partner.email}</td>
+                    <td>
+                      <span className={getStatusBadge(partner.status)}>
+                        {partner.status}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => deletePartner(partner._id)}
+                        className="btn-primary"
+                        style={{
+                          background: "rgba(239, 68, 68, 0.2)",
+                          color: "#f87171",
+                          border: "1px solid rgba(239, 68, 68, 0.3)",
+                          padding: "0.25rem 0.75rem",
+                          fontSize: "0.875rem",
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
