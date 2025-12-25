@@ -1,8 +1,8 @@
-const User = require("../models/User");
+const userService = require("../services/userService");
 
 const getPartners = async (req, res) => {
   try {
-    const partners = await User.find({ role: "partner" }).select("-password");
+    const partners = await userService.getPartners();
     res.json(partners);
   } catch (error) {
     console.error(error);
@@ -12,17 +12,15 @@ const getPartners = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-
-    if (user) {
-      await user.deleteOne();
-      res.json({ message: "User removed" });
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
+    await userService.deleteUser(req.params.id);
+    res.json({ message: "User removed" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    if (error.message === "User not found") {
+      res.status(404).json({ message: error.message });
+    } else {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
   }
 };
 

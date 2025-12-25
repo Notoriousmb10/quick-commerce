@@ -34,13 +34,13 @@ const CartDrawer = () => {
         items,
         deliveryLocation: { address: "123 Main St" },
       });
-
       clearCart();
       toggleCart();
       toast.success("Order Placed Successfully!");
 
       window.dispatchEvent(new CustomEvent("orderPlaced", { detail: data }));
     } catch (error) {
+      clearCart();
       toast.error(error.response?.data?.message || "Failed to place order");
     }
   };
