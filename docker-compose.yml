@@ -18,14 +18,6 @@ services:
     networks:
       - app-network
 
-  mongo:
-    image: mongo:6.0
-    container_name: quick-commerce-mongo
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - app-network
-
   nginx:
     image: nginx:alpine
     container_name: quick-commerce-nginx
@@ -43,5 +35,3 @@ networks:
   app-network:
     driver: bridge
 
-volumes:
-  mongo-data:
