@@ -1,19 +1,17 @@
 services:
   backend:
-    build: ./backend
+    image: yashbhingarde/quick-commerce-backend
     container_name: quick-commerce-backend
     environment:
       - PORT=5000
       - MONGO_URI=${MONGO_URI}
       - JWT_SECRET=${JWT_SECRET}
       - CLIENT_URL=${CLIENT_URL}
-    depends_on:
-      - mongo
     networks:
       - app-network
 
   frontend:
-    build: ./frontend
+    image: yashbhingarde/quick-commerce-frontend
     container_name: quick-commerce-frontend
     networks:
       - app-network
