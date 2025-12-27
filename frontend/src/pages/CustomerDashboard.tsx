@@ -4,6 +4,11 @@ import AuthContext from "../context/AuthContext";
 import SocketContext from "../context/SocketContext";
 import CartContext from "../context/CartContext";
 import { toast } from "react-toastify";
+import "./Dashboard.css"; // Import the styles
+
+import OffersSection from "../components/Dashboard/OffersSection";
+import CategorySection from "../components/Dashboard/CategorySection";
+import RestaurantList from "../components/Dashboard/RestaurantList";
 
 const CustomerDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -27,8 +32,9 @@ const CustomerDashboard = () => {
   }, []);
 
   useEffect(() => {
-    const handleOrderPlaced = (e) => {
+    const handleOrderPlaced = (e: any) => {
       setActiveOrder(e.detail);
+      toast.success("Order Placed Successfully!");
     };
     window.addEventListener("orderPlaced", handleOrderPlaced);
     return () => window.removeEventListener("orderPlaced", handleOrderPlaced);
@@ -36,8 +42,10 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     if (socket && activeOrder) {
+      // @ts-ignore
       socket.emit("join_room", `order_${activeOrder._id}`);
 
+      // @ts-ignore
       socket.on("order_update", (updatedOrder) => {
         setActiveOrder(updatedOrder);
         toast.info(`Order Status Updated: ${updatedOrder.status}`);
@@ -53,7 +61,7 @@ const CustomerDashboard = () => {
     try {
       const { data } = await API.get("/orders");
       const active = data.find(
-        (o) => !["delivered", "cancelled"].includes(o.status)
+        (o: any) => !["delivered", "cancelled"].includes(o.status)
       );
       if (active) setActiveOrder(active);
     } catch (error) {
@@ -61,90 +69,48 @@ const CustomerDashboard = () => {
     }
   };
 
-  const getProductsByCategory = (category) => {
-    return products.filter(
-      (p) => p.category.toLowerCase() === category.toLowerCase()
-    );
-  };
-
-  const categories = ["Snacks", "Lunchbox", "Beverages"];
-
   return (
-    <div>
-      <h1>Customer Dashboard</h1>
+    <div className="dashboard-container">
+      <OffersSection />
+
+      <CategorySection />
+
+      <RestaurantList products={products} addToCart={addToCart} />
+
       {activeOrder && (
         <div
-          className="card"
           style={{
-            border: "2px solid var(--secondary-color)",
-            marginBottom: "2rem",
+            position: "fixed",
+            bottom: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#333",
+            color: "white",
+            padding: "1rem 2rem",
+            borderRadius: "50px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+            zIndex: 1000,
           }}
         >
-          <h2>Live Order Tracking</h2>
-          <p>
-            <strong>Order ID:</strong> {activeOrder._id}
-          </p>
-          <p>
-            <strong>Status:</strong>{" "}
-            <span
-              style={{
-                color: "var(--secondary-color)",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-              }}
-            >
-              {activeOrder.status}
-            </span>
-          </p>
-          <p>
-            List all your Orders at{" "}
-            <a style={{ color: "var(--primary-color)" }} href="/orders">
-              Orders
-            </a>
-          </p>
-          {activeOrder.deliveryPartner && (
-            <p>
-              <strong>Delivery Partner:</strong>{" "}
-              {activeOrder.deliveryPartner.name} (On the way)
-            </p>
-          )}
+          <span>
+            Live Order: <strong>{activeOrder.status}</strong>
+          </span>
+          {/* @ts-ignore */}
+          <a
+            href="/orders"
+            style={{
+              color: "#ff5200",
+              fontWeight: "bold",
+              textDecoration: "none",
+            }}
+          >
+            Track
+          </a>
         </div>
       )}
-
-      <div>
-        {categories.map((category) => {
-          const categoryProducts = getProductsByCategory(category);
-          if (categoryProducts.length === 0) return null;
-
-          return (
-            <div key={category} className="category-section">
-              <div className="category-title">
-                <span>
-                  {category === "Snacks" && "🍿"}
-                  {category === "Lunchbox" && "🍱"}
-                  {category === "Beverages" && "🥤"}
-                </span>
-                {category}
-              </div>
-              <div className="product-grid">
-                {categoryProducts.map((p) => (
-                  <div key={p._id} className="product-card">
-                    <img src={p.image} alt={p.name} className="product-image" />
-                    <div className="product-details">
-                      <h4 className="product-name">{p.name}</h4>
-                      <div className="product-desc">{p.description}</div>
-                      <div className="product-price">${p.price}</div>
-                      <button className="add-btn" onClick={() => addToCart(p)}>
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

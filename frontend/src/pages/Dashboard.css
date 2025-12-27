@@ -1,0 +1,471 @@
+:root {
+  --primary: #ff5200;
+  --text-dark: #1c1c1c;
+  --text-gray: #696969;
+  --bg-light: #f8f8f8;
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.dashboard-container {
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.dash-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--text-dark);
+}
+
+.location-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  margin-left: 2rem;
+  cursor: pointer;
+}
+
+.location-selector:hover {
+  color: var(--primary);
+}
+
+.dash-search-bar {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 2rem;
+  position: relative;
+}
+
+.dash-search-input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.dash-search-input:focus {
+  box-shadow: 0 0 0 2px rgba(255, 82, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.dash-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.dash-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dash-nav-item:hover, .dash-nav-item.active {
+  color: var(--primary);
+}
+
+/* Offers Section */
+.offers-section {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.offer-banner {
+  background: linear-gradient(100deg, #ff9a9a 0%, #ff5200 100%); /* Example gradient */
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  height: 250px;
+}
+
+.offer-content {
+  z-index: 2;
+  max-width: 50%;
+}
+
+.offer-tag {
+    background: white;
+    color: var(--primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.offer-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.offer-sub {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.offer-image {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  object-fit: cover;
+  mask-image: linear-gradient(to right, transparent, black 20%);
+}
+
+
+/* Categories */
+.categories-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-head {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+}
+
+.cat-rail {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+.cat-img-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.cat-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.cat-item:hover .cat-img {
+    transform: scale(1.1);
+}
+
+.cat-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+/* Restaurant List */
+.restaurant-list-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.filters-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    background: white;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #333; /* Dark relevant btn */
+    color: white;
+    border-color: #333;
+}
+
+.filter-btn.secondary:hover {
+    background: #f0f0f0;
+    color: var(--text-dark);
+    border-color: #ccc;
+}
+
+.resto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.resto-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    /* border: 1px solid #f0f0f0; */
+}
+
+.resto-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow);
+}
+
+.resto-img-container {
+    height: 200px;
+    position: relative;
+}
+
+.resto-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.promoted-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.offer-badge-overlay {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    background: #256fef;
+    color: white;
+    padding: 0 0.5rem;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.time-badge {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(255,255,255,0.9);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.resto-info {
+    padding: 1rem 0;
+}
+
+.resto-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.resto-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1c1c1c;
+}
+
+.rating-badge {
+    background: #24963f;
+    color: white;
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.resto-desc {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.resto-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    border-top: 1px solid #f0f0f0;
+    padding-top: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding-bottom: 6rem;
+  }
+
+  /* Reduce side padding to give more width to content */
+  .offers-section, .categories-section, .restaurant-list-section {
+    padding: 1rem 1rem; /* Slightly tighter horizontal padding */
+  }
+
+  /* Offers: Make it feel larger */
+  .offer-banner {
+    height: auto;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    padding: 1.5rem;
+    width: 100%; /* Ensure full width usage within padding */
+  }
+
+  .offer-content {
+    max-width: 100%;
+    margin-top: 1rem;
+    z-index: 2;
+  }
+
+  .offer-title {
+    font-size: 1.8rem;
+  }
+
+  .offer-image {
+    position: relative;
+    width: 100%;
+    height: 180px; /* Increased height for better visibility */
+    opacity: 0.9;
+    mask-image: none;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    object-position: center;
+  }
+
+  /* Categories: Ensure enough space */
+  .cat-rail {
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .cat-item {
+    min-width: 75px; 
+  }
+
+  .cat-img-wrapper {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .cat-name {
+      font-size: 0.8rem;
+  }
+
+  /* Restaurant List: Grid Structure */
+  .resto-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 Columns for mobile */
+    gap: 1rem; /* Smaller gap for mobile */
+  }
+
+  .filters-bar {
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+  }
+  
+  .filters-bar::-webkit-scrollbar {
+      display: none;
+  }
+
+  .filter-btn {
+    white-space: nowrap;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  /* Adjust card content for smaller grid */
+  .resto-img-container {
+      height: 140px; /* Smaller image height for 2-col grid */
+  }
+  
+  .resto-name {
+      font-size: 0.95rem; /* Smaller title */
+  }
+  
+  .rating-badge {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.3rem;
+  }
+  
+  .resto-desc, .resto-meta {
+      font-size: 0.75rem;
+  }
+}
