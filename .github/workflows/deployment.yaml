@@ -30,16 +30,22 @@ jobs:
         run: |
           ssh -i ~/.ssh/server_key -p $SSH_PORT $SSH_USER@$SSH_HOST << 'EOF'
             set -e
+
             cd ~/quick-commerce
 
-            echo "Pulling latest release..."
+            echo "Fetching tags..."
             git fetch --all --tags
-            git checkout ${{ github.ref_name }}
+
+            echo "Checking out release tag..."
+            git checkout tags/${GITHUB_REF_NAME} -B release
+
+            echo "Validating environment..."
+            test -f .env || (echo ".env file missing!" && exit 1)
 
             echo "Rebuilding containers..."
             docker-compose down
-            docker-compose pull
+            docker-compose build
             docker-compose up -d
 
-            echo "Deployment complete!"
+            echo "Deployment complete 🚀"
           EOF
