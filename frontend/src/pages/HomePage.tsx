@@ -4,6 +4,20 @@ import "./HomePage.css";
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+
+  const phrases = [
+    { text: "Hungry?", highlight: "We got you." },
+    { text: "Cravings called.", highlight: "We answered." },
+    { text: "Hunger calls,", highlight: "we deliver." },
+  ];
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   const restaurants = [
     {
@@ -105,8 +119,11 @@ const HomePage = () => {
     <div className="home-container">
       {/* Hero Section */}
       <section className="hero-section">
-        <h1 className="hero-title">
-          Hungry? <span style={{ color: "var(--primary)" }}>We got you.</span>
+        <h1 className="hero-title" key={currentPhraseIndex}>
+          {phrases[currentPhraseIndex].text}{" "}
+          <span style={{ color: "var(--primary)" }}>
+            {phrases[currentPhraseIndex].highlight}
+          </span>
         </h1>
         <p className="hero-subtitle">
           Order from the best restaurants and get it delivered in minutes.

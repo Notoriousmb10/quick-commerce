@@ -41,6 +41,18 @@
   letter-spacing: -1px;
   margin-bottom: 1.5rem;
   line-height: 1.1;
+  animation: dropIn 0.5s ease-out;
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-subtitle {
