@@ -315,7 +315,7 @@ const AdminDashboard = () => {
                 {orders.length === 0 ? (
                   <tr>
                     <td
-                      colSpan="6"
+                      colSpan={6}
                       style={{
                         padding: "2rem",
                         textAlign: "center",
@@ -424,7 +424,7 @@ const AdminDashboard = () => {
                 {partners.length === 0 ? (
                   <tr>
                     <td
-                      colSpan="3"
+                      colSpan={3}
                       style={{
                         padding: "2rem",
                         textAlign: "center",

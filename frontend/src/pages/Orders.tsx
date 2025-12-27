@@ -34,7 +34,8 @@ const Orders = () => {
     try {
       const { data } = await API.get("/orders");
       const sorted = data.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       setOrders(sorted);
     } catch (error) {

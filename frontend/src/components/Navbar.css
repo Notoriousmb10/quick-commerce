@@ -1,0 +1,118 @@
+/* Navbar Base Styles */
+.navbar {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand {
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(to right, var(--primary-color), var(--primary-hover));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-items {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.user-greeting {
+  color: var(--text-secondary);
+}
+
+.logout-btn {
+  background: var(--danger-color);
+}
+
+.register-btn {
+  background: transparent;
+  color: var(--primary-color); /* Adjusted for light theme visibility */
+  border: 1px solid var(--primary-color);
+}
+
+.register-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Hamburger Menu (Hidden on Desktop) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .nav-items {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--card-bg);
+    padding: 1rem;
+    border-bottom: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .nav-items.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-items > * {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .user-greeting {
+    display: none; /* Hide greeting on mobile to save space */
+  }
+
+  .cart-icon-container {
+    margin-right: 0; /* Adjust cart icon spacing */
+  }
+}

@@ -1,14 +1,27 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { toast } from "react-toastify";
+import { CartItem, Product } from "../types";
 
-const CartContext = createContext();
+interface CartContextType {
+  cartItems: CartItem[];
+  addToCart: (product: Product) => void;
+  removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, delta: number) => void;
+  clearCart: () => void;
+  isCartOpen: boolean;
+  toggleCart: () => void;
+  cartTotal: number;
+  itemCount: number;
+}
 
-export const CartProvider = ({ children }) => {
+const CartContext = createContext<CartContextType | undefined>(undefined);
+
+export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
   const [itemCount, setItemCount] = useState(0);
 
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
     const count = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -20,7 +33,7 @@ export const CartProvider = ({ children }) => {
     setCartTotal(total);
   }, [cartItems]);
 
-  const addToCart = (product) => {
+  const addToCart = (product: Product) => {
     setCartItems((prev) => {
       const existing = prev.find((item) => item.product._id === product._id);
       if (existing) {
@@ -35,13 +48,13 @@ export const CartProvider = ({ children }) => {
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (productId: string) => {
     setCartItems((prev) =>
       prev.filter((item) => item.product._id !== productId)
     );
   };
 
-  const updateQuantity = (productId, delta) => {
+  const updateQuantity = (productId: string, delta: number) => {
     setCartItems((prev) =>
       prev
         .map((item) => {

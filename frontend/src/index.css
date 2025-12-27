@@ -1,22 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #3b82f6;       /* Blue 500 - Main Action */
-  --primary-hover: #2563eb;       /* Blue 600 */
-  --secondary-color: #10b981;     /* Emerald 500 - Success/Accent */
+  /* Light Red Theme */
+  --primary-color: #ef4444;       /* Red 500 */
+  --primary-hover: #dc2626;       /* Red 600 */
+  --secondary-color: #10b981;     /* Emerald 500 */
   --danger-color: #ef4444;        /* Red 500 */
   
-  --background-base: #0f172a;     /* Slate 900 */
-  --card-bg: rgba(30, 41, 59, 0.65); /* Glassy Slate 800 */
-  --card-border: rgba(255, 255, 255, 0.08);
+  --background-base: #f8fafc;     /* Slate 50 */
+  --card-bg: #ffffff;             /* White */
+  --card-border: #e2e8f0;         /* Slate 200 */
   
-  --text-primary: #f8fafc;       /* Slate 50 */
-  --text-secondary: #94a3b8;     /* Slate 400 */
-  --text-muted: #64748b;         /* Slate 500 */
+  --text-primary: #1e293b;       /* Slate 800 */
+  --text-secondary: #64748b;     /* Slate 500 */
+  --text-muted: #94a3b8;         /* Slate 400 */
   
-  --border-radius: 16px;
-  --shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.3);
-  --glass-blur: blur(12px);
+  --border-radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --glass-blur: blur(0px); /* No glass blur needed for solid white cards */
 }
 
 body {
@@ -25,8 +27,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background-base);
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
 }
@@ -50,13 +50,14 @@ button:active {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+  background: var(--primary-color);
   color: white;
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 8px 12px -1px rgba(59, 130, 246, 0.4);
+  background: var(--primary-hover);
+  box-shadow: 0 8px 12px -1px rgba(239, 68, 68, 0.4);
   transform: translateY(-1px);
 }
 
@@ -67,8 +68,6 @@ button:active {
 
 .card {
   background: var(--card-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--card-border);
   border-radius: var(--border-radius);
   padding: 1.5rem;
@@ -83,7 +82,7 @@ button:active {
 input {
     width: 100%;
     padding: 0.8rem 1rem;
-    background: rgba(15, 23, 42, 0.5);
+    background: #fff;
     border: 1px solid var(--card-border);
     border-radius: var(--border-radius);
     color: var(--text-primary);
@@ -94,8 +93,7 @@ input {
 
 input:focus {
     border-color: var(--primary-color);
-    background: rgba(15, 23, 42, 0.8);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
 input::placeholder {
@@ -109,8 +107,8 @@ input::placeholder {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   z-index: 1000;
   display: flex;
   justify-content: flex-end;
@@ -118,15 +116,14 @@ input::placeholder {
 }
 
 .cart-drawer {
-  background: rgba(30, 41, 59, 0.95);
-  backdrop-filter: blur(16px);
+  background: #ffffff;
   border-left: 1px solid var(--card-border);
   width: 400px;
   max-width: 90%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: -10px 0 25px rgba(0, 0, 0, 0.5);
+  box-shadow: -10px 0 25px rgba(0, 0, 0, 0.1);
   animation: slideIn 0.3s ease;
 }
 
@@ -136,15 +133,14 @@ input::placeholder {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #fff;
 }
 
 .cart-header h2 {
   margin: 0;
   font-size: 1.5rem;
-  background: linear-gradient(to right, #fff, #94a3b8);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
 .close-btn {
@@ -161,13 +157,14 @@ input::placeholder {
   flex: 1;
   overflow-y: auto;
   padding: 1.5rem;
+  background: #f8fafc;
 }
-/* Scrollbar specific for cart */
+
 .cart-items::-webkit-scrollbar {
   width: 6px;
 }
 .cart-items::-webkit-scrollbar-thumb {
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(0,0,0,0.1);
   border-radius: 3px;
 }
 
@@ -181,9 +178,12 @@ input::placeholder {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 1rem;
+  padding: 1rem;
   margin-bottom: 1rem;
-  border-bottom: 1px solid var(--card-border);
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
 }
 
 .item-info h4 {
@@ -205,12 +205,12 @@ input::placeholder {
 
 .item-controls button {
   padding: 0.25rem 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: #f1f5f9;
   color: var(--text-primary);
   border-radius: 6px;
 }
 .item-controls button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #e2e8f0;
 }
 
 .remove-btn {
@@ -223,7 +223,7 @@ input::placeholder {
 .cart-footer {
   padding: 1.5rem;
   border-top: 1px solid var(--card-border);
-  background: rgba(15, 23, 42, 0.4);
+  background: #fff;
 }
 
 .summary-row {
@@ -244,6 +244,10 @@ input::placeholder {
   width: 100%;
   margin-top: 1rem;
   font-size: 1.1rem;
+  background: var(--primary-color);
+}
+.checkout-btn:hover {
+  background: var(--primary-hover);
 }
 
 @keyframes fadeIn {
@@ -256,11 +260,7 @@ input::placeholder {
   to { transform: translateX(0); }
 }
 
-/* Category Sections */
-.category-section {
-  margin-bottom: 3rem;
-}
-
+/* Product & Category Styles */
 .category-title {
   font-size: 1.5rem;
   border-left: 4px solid var(--primary-color);
@@ -272,15 +272,8 @@ input::placeholder {
   color: var(--text-primary);
 }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
-}
-
 .product-card {
-  background: var(--card-bg);
-  backdrop-filter: var(--glass-blur);
+  background: #fff;
   border: 1px solid var(--card-border);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -291,8 +284,7 @@ input::placeholder {
 
 .product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.4);
-  background: rgba(30, 41, 59, 0.8);
+  box-shadow: var(--shadow-lg);
 }
 
 .product-image {
@@ -312,6 +304,7 @@ input::placeholder {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   color: var(--text-primary);
+  font-weight: 600;
 }
 
 .product-desc {
@@ -344,17 +337,18 @@ input::placeholder {
   cursor: pointer;
   padding: 0.5rem;
   margin-right: 1rem;
+  transition: background 0.2s;
+  border-radius: 50%;
 }
 .cart-icon-container:hover {
-  background: rgba(255,255,255,0.05);
-  border-radius: 50%;
+  background: rgba(0,0,0,0.05);
 }
 
 .cart-badge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: var(--danger-color);
+  background: var(--primary-color);
   color: white;
   font-size: 0.75rem;
   width: 20px;
@@ -367,19 +361,11 @@ input::placeholder {
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Toastify Override for Dark Theme */
-.Toastify__toast-theme--light {
-  background: var(--card-bg);
-  color: var(--text-primary);
-  backdrop-filter: blur(10px);
-}
-
 /* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
   background: transparent;
-  width: 100%;
 }
 
 th {
@@ -388,7 +374,7 @@ th {
   font-weight: 600;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--card-border);
-  background: rgba(15, 23, 42, 0.3);
+  background: #f1f5f9;
 }
 
 td {
@@ -397,15 +383,11 @@ td {
   border-bottom: 1px solid var(--card-border);
 }
 
-tr:last-child td {
-  border-bottom: none;
-}
-
 tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: #f8fafc;
 }
 
-/* Status Badges */
+/* Badges */
 .badge {
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
@@ -416,39 +398,30 @@ tr:hover td {
 }
 
 .badge-success {
-  background: rgba(16, 185, 129, 0.2);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
 }
 
 .badge-info {
-  background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
 }
 
 .badge-warning {
-  background: rgba(245, 158, 11, 0.2);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
 }
 
 .badge-danger {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
 }
 
-/* Headings */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-primary);
-}
-
-.text-secondary {
-  color: var(--text-secondary);
-}
-
-.text-primary {
-  color: var(--text-primary);
-}
-
+/* Text Utilities */
+.text-secondary { color: var(--text-secondary); }
+.text-primary { color: var(--text-primary); }
+h1, h2, h3, h4, h5, h6 { color: var(--text-primary); }

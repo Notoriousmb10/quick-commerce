@@ -1,17 +1,17 @@
 /* Auth Pages Modern Styling */
 .auth-container {
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: var(--background-base);
   position: relative;
   overflow: hidden;
 }
 
 /* Dynamic Background Elements */
-.auth-container::before,
-.auth-container::after {
+  .auth-container::before,
+  .auth-container::after {
   content: '';
   position: absolute;
   width: 300px;
@@ -23,32 +23,30 @@
 }
 
 .auth-container::before {
-  background: rgba(59, 130, 246, 0.3); /* Blue */
+  background: rgba(239, 68, 68, 0.1); /* Red tint */
   top: -50px;
   left: -50px;
 }
 
 .auth-container::after {
-  background: rgba(16, 185, 129, 0.2); /* Emerald */
+  background: rgba(16, 185, 129, 0.1); /* Green tint */
   bottom: -50px;
   right: -50px;
   animation-delay: -5s;
 }
 
 .auth-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--card-border);
   border-radius: 24px;
-  padding: 3rem 2.5rem;
+  padding: 2rem 2.5rem; /* Reduced vertical padding */
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-lg);
   position: relative;
   z-index: 1;
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  color: #fff;
+  color: var(--text-primary);
+  margin-bottom: 5vh; /* Shift visually up */
 }
 
 .auth-title {
@@ -56,15 +54,12 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: 0.5rem;
-  background: linear-gradient(to right, #fff, #94a3b8);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
 }
 
 .auth-subtitle {
   text-align: center;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 2.5rem;
   font-size: 0.95rem;
 }
@@ -72,7 +67,7 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem; /* Compact gap */
 }
 
 .form-group {
@@ -81,24 +76,24 @@
 
 .form-input {
   width: 100%;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #fff;
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 1rem 1rem 1rem 3rem; /* Left padding for icon */
-  color: white;
+  color: var(--text-primary);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
 
 .form-input::placeholder {
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: rgba(15, 23, 42, 0.8);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  border-color: var(--primary-color);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
 }
 
 .input-icon {
@@ -106,17 +101,17 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #64748b;
+  color: var(--text-muted);
   transition: color 0.3s ease;
 }
 
 .form-input:focus + .input-icon,
 .form-input:not(:placeholder-shown) + .input-icon {
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .auth-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: var(--primary-color);
   color: white;
   border: none;
   padding: 1rem;
@@ -132,7 +127,8 @@
 
 .auth-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+  background: var(--primary-hover);
+  box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.3);
 }
 
 .auth-btn:active {
@@ -142,12 +138,12 @@
 .auth-footer {
   margin-top: 2rem;
   text-align: center;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
 .auth-link {
-  color: #3b82f6;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
   margin-left: 0.5rem;
@@ -155,18 +151,18 @@
 }
 
 .auth-link:hover {
-  color: #60a5fa;
+  color: var(--primary-hover);
   text-decoration: underline;
 }
 
 /* Select styling */
 .form-select {
   width: 100%;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #fff;
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 1rem 1rem 1rem 3rem;
-  color: white;
+  color: var(--text-primary);
   font-size: 1rem;
   appearance: none;
   cursor: pointer;
@@ -175,8 +171,8 @@
 
 .form-select:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
 }
 
 .select-arrow {
@@ -184,7 +180,7 @@
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #64748b;
+  color: var(--text-muted);
   pointer-events: none;
 }
 
