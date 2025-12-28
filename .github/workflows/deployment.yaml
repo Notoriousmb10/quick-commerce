@@ -37,7 +37,7 @@ jobs:
             git fetch --all --tags
 
             echo "Checking out release tag..."
-            git checkout tags/${GITHUB_REF_NAME} -B release
+            git checkout ${GITHUB_REF_NAME} -B release
 
             echo "Validating environment..."
             test -f .env || (echo ".env file missing!" && exit 1)
