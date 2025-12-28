@@ -1,0 +1,411 @@
+.onboarding-container {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.onboarding-header {
+  background: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.onboarding-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.onboarding-logo span {
+  color: #ff5200;
+}
+
+.login-link {
+  font-size: 0.9rem;
+  color: #666;
+  text-decoration: none;
+}
+
+.login-btn {
+  border: 1px solid #ddd;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  margin-left: 1rem;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero-banner {
+  background: #ffffff;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 2rem auto;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  gap: 4rem;
+}
+
+.hero-text {
+  flex: 1;
+  max-width: 500px;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1c1c1c;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-text h1 span {
+  color: #ff5200;
+}
+
+.hero-subtext {
+  color: #696969;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.cta-btn {
+  background: #ff5200;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.hero-image {
+  flex: 1;
+  max-width: 500px;
+  background: #fdf578; /* Placeholder yellow/lime component */
+  border-radius: 20px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.hero-chef-img {
+    height: 110%;
+    object-fit: contain;
+}
+
+
+/* Main Layout */
+.onboarding-content {
+  display: flex;
+  max-width: 1200px;
+  margin: 2rem auto;
+  gap: 3rem;
+  padding: 0 2rem;
+  position: relative;
+}
+
+.sidebar {
+  flex: 0 0 250px;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.progress-steps {
+  list-style: none;
+  padding: 0;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  color: #9c9c9c;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.step-item.active {
+  color: #1c1c1c;
+  font-weight: 600;
+}
+
+.step-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.step-item.active .step-number {
+  background: #ff5200;
+  color: white;
+  border-color: #ff5200;
+}
+
+.step-item.completed .step-number {
+  background: #10b981; /* Green check */
+  border-color: #10b981;
+  color: white;
+}
+
+
+/* Form Sections */
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 100px; /* Space for footer */
+}
+
+.form-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  scroll-margin-top: 120px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-number {
+  background: #ff5200;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1c1c1c;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-input, .form-select, .form-textarea {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.checkbox-input {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff5200;
+}
+
+/* Map Placeholder */
+.map-placeholder {
+  background: #eef;
+  height: 200px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #889;
+  font-weight: 500;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg'); /* Just a pattern */
+  background-size: cover;
+  opacity: 0.5;
+}
+
+/* Verify Button */
+.input-with-btn {
+  display: flex;
+  gap: 1rem;
+}
+
+.verify-btn {
+  padding: 0 1.5rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Upload Box */
+.upload-box {
+  border: 2px dashed #ddd;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  background: #fafafa;
+  transition: border-color 0.2s;
+}
+
+.upload-box:hover {
+  border-color: #ff5200;
+}
+
+.upload-text {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Footer sticky */
+.onboarding-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 1rem 2rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+
+.footer-secure {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.footer-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #666;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-submit {
+  background: #ff5200;
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+  
+  .onboarding-content {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    position: static;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  
+  .progress-steps {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+  }
+  
+  .step-item {
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .full-width {
+    grid-column: span 1;
+  }
+}

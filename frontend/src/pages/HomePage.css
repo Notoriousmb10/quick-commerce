@@ -286,6 +286,8 @@
   display: flex;
   gap: 1rem;
   align-items: flex-start;
+  justify-content: center;
+  align-items: center;
 }
 
 .feature-icon-box {
@@ -407,6 +409,11 @@
   width: 100%;
   height: 250px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.partner-card:hover .partner-img {
+  transform: scale(1.05);
 }
 
 .partner-content {
@@ -532,20 +539,32 @@
   .app-banner {
     flex-direction: column;
     text-align: center;
-    padding: 2rem;
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .app-banner-title {
+      font-size: 1.8rem;
+  }
+  
+  .app-banner-desc {
+      font-size: 1rem;
   }
 
   .app-banner-image-container {
-    width: 100%;
-    margin-top: 2rem;
+    width: 80%;
+    max-width: 300px;
+    margin-top: 2.5rem;
   }
   
   .app-banner-img {
       transform: none;
+      width: 100%;
   }
   
   .store-buttons {
       justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
   }
 
   .partner-grid {

@@ -23,90 +23,108 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
 import CartDrawer from "./components/CartDrawer";
 
+import { Outlet } from "react-router-dom";
+import PartnerOnboarding from "./pages/PartnerOnboarding";
+
+// Layout component for the main application
+const MainLayout = () => {
+  return (
+    <div className="App">
+      <Navbar />
+      <div
+        className="container"
+        style={{
+          padding: "20px",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
+        <Outlet />
+      </div>
+      <CartDrawer />
+    </div>
+  );
+};
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <SocketProvider>
           <CartProvider>
-            <div className="App">
-              <Navbar />
-              <div
-                className="container"
-                style={{
-                  padding: "20px",
-                  maxWidth: "1200px",
-                  margin: "0 auto",
-                }}
-              >
-                <Routes>
-                  <Route
-                    path="/home"
-                    element={
-                      <PublicRoute>
-                        <LandingPage />
-                      </PublicRoute>
-                    }
-                  />
-                  <Route
-                    path="/login"
-                    element={
-                      <PublicRoute>
-                        <Login />
-                      </PublicRoute>
-                    }
-                  />
-                  <Route
-                    path="/register"
-                    element={
-                      <PublicRoute>
-                        <Register />
-                      </PublicRoute>
-                    }
-                  />
-                  <Route
-                    path="/customer"
-                    element={
-                      <ProtectedRoute allowedRoles={["customer"]}>
-                        <CustomerDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/orders"
-                    element={
-                      <ProtectedRoute allowedRoles={["customer"]}>
-                        <Orders />
-                      </ProtectedRoute>
-                    }
-                  />
+            <Routes>
+              {/* Partner Onboarding Route - Full Page Layout */}
+              <Route
+                path="/partner/onboarding"
+                element={<PartnerOnboarding />}
+              />
 
-                  <Route
-                    path="/partner"
-                    element={
-                      <ProtectedRoute allowedRoles={["partner"]}>
-                        <PartnerDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
+              {/* Main Application Routes */}
+              <Route element={<MainLayout />}>
+                <Route
+                  path="/home"
+                  element={
+                    <PublicRoute>
+                      <LandingPage />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <PublicRoute>
+                      <Login />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <PublicRoute>
+                      <Register />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/customer"
+                  element={
+                    <ProtectedRoute allowedRoles={["customer"]}>
+                      <CustomerDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/orders"
+                  element={
+                    <ProtectedRoute allowedRoles={["customer"]}>
+                      <Orders />
+                    </ProtectedRoute>
+                  }
+                />
 
-                  <Route
-                    path="/admin"
-                    element={
-                      <ProtectedRoute allowedRoles={["admin"]}>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
+                <Route
+                  path="/partner"
+                  element={
+                    <ProtectedRoute allowedRoles={["partner"]}>
+                      <PartnerDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-                  <Route path="/" element={<Navigate to="/home" replace />} />
-                </Routes>
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute allowedRoles={["admin"]}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-                <ToastContainer position="bottom-right" />
-              </div>
+                <Route path="/" element={<Navigate to="/home" replace />} />
+              </Route>
+            </Routes>
 
-              <CartDrawer />
-            </div>
+            <ToastContainer position="bottom-right" />
           </CartProvider>
         </SocketProvider>
       </AuthProvider>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   MapPin,
   Search,
@@ -11,8 +11,13 @@ import {
   CheckCircle,
 } from "lucide-react";
 import "./HomePage.css";
-import DeliveryRider from "../assets/DeliveryPartner.jpg";
+import DeliveryRider from "../assets/DeliveryPartner.png";
+import FoodDeliveryPartner from "../assets/DeliveryPartnerFood.png";
+import QuickMatoApp from "../assets/MobileApp.png";
+import ForRestaurants from "../assets/ForRestaurants.webp";
+import ForRiders from "../assets/ForRiders.webp";
 const HomePage = () => {
+  const navigate = useNavigate();
   const [location, setLocation] = useState("");
 
   const categories = [
@@ -168,7 +173,7 @@ const HomePage = () => {
             </p>
 
             <div className="feature-list">
-              <div className="feature-item">
+              <div className="feature-item ">
                 <div className="feature-icon-box">
                   <Clock color="var(--primary)" size={24} />
                 </div>
@@ -216,7 +221,7 @@ const HomePage = () => {
           </div>
           <div className="features-image-wrapper">
             <img
-              src="https://images.unsplash.com/photo-1616401783446-e41427c385a8?w=800&q=80"
+              src={FoodDeliveryPartner}
               alt="Food Delivery"
               className="features-image"
             />
@@ -254,7 +259,7 @@ const HomePage = () => {
           </div>
           <div className="app-banner-image-container">
             <img
-              src="https://images.unsplash.com/photo-1512428559087-560fa5ce7d87?w=600&q=80"
+              src={QuickMatoApp}
               alt="Mobile App"
               className="app-banner-img"
             />
@@ -274,7 +279,7 @@ const HomePage = () => {
         <div className="partner-grid">
           <div className="partner-card">
             <img
-              src="https://images.unsplash.com/photo-1556910103-1c02745a30bf?w=600&q=80"
+              src={ForRestaurants}
               alt="Restaurant Partner"
               className="partner-img"
             />
@@ -285,14 +290,17 @@ const HomePage = () => {
                 Reach new customers and grow your sales by listing your menu on
                 QuickMato.
               </p>
-              <button className="btn-primary btn-block">
+              <button
+                className="btn-primary btn-block"
+                onClick={() => navigate("/partner/onboarding")}
+              >
                 Register your store
               </button>
             </div>
           </div>
           <div className="partner-card">
             <img
-              src="https://images.unsplash.com/photo-1620300436217-095fe334e068?w=600&q=80"
+              src={ForRiders}
               alt="Delivery Partner"
               className="partner-img"
             />
@@ -387,7 +395,7 @@ const HomePage = () => {
 
         <div className="footer-bottom">
           <span>© 2024 QuickMato Technologies Pvt. Ltd.</span>
-          <span>Made with ❤️ in India</span>
+          <span>Made with ❤️ in India By Yash</span>
         </div>
       </footer>
     </div>
