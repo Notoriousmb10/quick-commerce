@@ -43,8 +43,9 @@ jobs:
             test -f .env || (echo ".env file missing!" && exit 1)
 
             echo "Rebuilding containers..."
-            docker compose pull
-            docker compose up -d
+            docker-compose pull
+            docker-compose up -d
+
             
             echo "Deployment complete 🚀"
           EOF
