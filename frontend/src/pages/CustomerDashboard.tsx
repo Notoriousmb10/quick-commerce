@@ -11,7 +11,6 @@ import CategorySection from "../components/Dashboard/CategorySection";
 import RestaurantList from "../components/Dashboard/RestaurantList";
 
 const CustomerDashboard = () => {
-  const { user } = useContext(AuthContext);
   const socket = useContext(SocketContext);
   const { addToCart } = useContext(CartContext);
 
@@ -109,6 +108,12 @@ const CustomerDashboard = () => {
           >
             Track
           </a>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => setActiveOrder(null)}
+          >
+            x
+          </div>
         </div>
       )}
     </div>

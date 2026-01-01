@@ -12,6 +12,8 @@ interface CartContextType {
   toggleCart: () => void;
   cartTotal: number;
   itemCount: number;
+  couponCode: string;
+  applyCoupon: (code: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -33,6 +35,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCartTotal(total);
   }, [cartItems]);
 
+  const [couponCode, setCouponCode] = useState<string>("");
+
   const addToCart = (product: Product) => {
     setCartItems((prev) => {
       const existing = prev.find((item) => item.product._id === product._id);
@@ -46,6 +50,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { product, quantity: 1 }];
     });
     setIsCartOpen(true);
+  };
+
+  const applyCoupon = (code: string) => {
+    setCouponCode(code);
   };
 
   const removeFromCart = (productId: string) => {
@@ -92,6 +100,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         toggleCart,
         cartTotal,
         itemCount,
+        couponCode,
+        applyCoupon,
       }}
     >
       {children}

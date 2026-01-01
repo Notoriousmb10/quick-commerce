@@ -23,7 +23,6 @@ const Orders = () => {
           `Order #${updatedOrder._id.slice(-6)} updated: ${updatedOrder.status}`
         );
       });
-
       return () => {
         socket.off("order_update");
       };

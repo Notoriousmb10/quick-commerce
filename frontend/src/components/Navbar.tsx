@@ -14,7 +14,7 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
-  const { itemCount } = useContext(CartContext);
+  const { itemCount, toggleCart } = useContext(CartContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setFixedMenu] = useState(false);
@@ -69,7 +69,7 @@ const Navbar = () => {
                   <ShoppingBag size={20} />
                   <span>Orders</span>
                 </Link>
-                <Link to="/cart" className={isActive("/cart")}>
+                <div onClick={toggleCart} className={isActive("/cart")}>
                   <div style={{ position: "relative" }}>
                     <ShoppingCart size={20} />
                     {itemCount > 0 && (
@@ -77,7 +77,7 @@ const Navbar = () => {
                     )}
                   </div>
                   <span>Cart</span>
-                </Link>
+                </div>
               </>
             ) : (
               // Logic for Admin/Partner

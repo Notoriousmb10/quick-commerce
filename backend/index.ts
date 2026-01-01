@@ -12,7 +12,8 @@ import productRoutes from "./src/routes/productRoutes";
 import orderRoutes from "./src/routes/orderRoutes";
 import userRoutes from "./src/routes/userRoutes";
 import restaurantRoutes from "./src/routes/restaurantRoutes";
-
+import cron from "node-cron";
+import { updateFailedOrders } from "./src/utils/update-failed-order.cron";
 const app = express();
 const server = http.createServer(app);
 
@@ -55,6 +56,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/restaurants", restaurantRoutes);
+
+cron.schedule("*/5 * * * *", updateFailedOrders);
 
 const PORT = process.env.PORT || 5000;
 

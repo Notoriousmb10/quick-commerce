@@ -12,6 +12,8 @@ const CartDrawer = () => {
     updateQuantity,
     cartTotal,
     clearCart,
+    couponCode,
+    applyCoupon,
   } = useContext(CartContext);
 
   const DELIVERY_FEE = 5;
@@ -36,6 +38,7 @@ const CartDrawer = () => {
       });
       clearCart();
       toggleCart();
+      applyCoupon("");
       toast.success("Order Placed Successfully!");
 
       window.dispatchEvent(new CustomEvent("orderPlaced", { detail: data }));
@@ -98,11 +101,32 @@ const CartDrawer = () => {
 
         {cartItems.length > 0 && (
           <div className="cart-footer">
+            <div className="coupon-section" style={{ marginBottom: "1rem" }}>
+              <input
+                type="text"
+                placeholder="Coupon Code"
+                value={couponCode}
+                onChange={(e) => applyCoupon(e.target.value)}
+                style={{
+                  padding: "0.5rem",
+                  width: "70%",
+                  marginRight: "0.5rem",
+                  borderRadius: "4px",
+                  border: "1px solid #ddd",
+                }}
+              />
+            </div>
             <div className="bill-summary">
               <div className="summary-row">
                 <span>Subtotal</span>
                 <span>${cartTotal.toFixed(2)}</span>
               </div>
+              {couponCode === "WELCOME50" && (
+                <div className="summary-row" style={{ color: "green" }}>
+                  <span>Discount (WELCOME50)</span>
+                  <span>- ${Math.min(cartTotal * 0.5, 100).toFixed(2)}</span>
+                </div>
+              )}
               <div className="summary-row">
                 <span>Tax (5%)</span>
                 <span>${taxAmount.toFixed(2)}</span>
@@ -114,7 +138,17 @@ const CartDrawer = () => {
               <hr />
               <div className="summary-row total">
                 <span>Grand Total</span>
-                <span>${grandTotal.toFixed(2)}</span>
+                <span>
+                  $
+                  {(
+                    cartTotal +
+                    taxAmount +
+                    DELIVERY_FEE -
+                    (couponCode === "WELCOME50"
+                      ? Math.min(cartTotal * 0.5, 100)
+                      : 0)
+                  ).toFixed(2)}
+                </span>
               </div>
             </div>
             <button

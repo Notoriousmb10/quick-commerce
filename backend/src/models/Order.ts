@@ -22,7 +22,10 @@ export interface IOrder extends Document {
     | "picked_up"
     | "on_way"
     | "delivered"
+    | "failed"
     | "cancelled";
+  discountAmount: number;
+  couponCode: string;
   deliveryPartner?: mongoose.Schema.Types.ObjectId;
   deliveryLocation: {
     address: string;
@@ -59,6 +62,14 @@ const orderSchema = new Schema<IOrder>({
     type: Number,
     required: true,
   },
+  discountAmount: {
+    type: Number,
+    default: 0,
+  },
+  couponCode: {
+    type: String,
+    default: null,
+  },
   status: {
     type: String,
     enum: [
@@ -67,9 +78,11 @@ const orderSchema = new Schema<IOrder>({
       "picked_up",
       "on_way",
       "delivered",
+      "failed",
       "cancelled",
     ],
     default: "placed",
+    index: true,
   },
   deliveryPartner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -89,6 +102,7 @@ const orderSchema = new Schema<IOrder>({
   createdAt: {
     type: Date,
     default: Date.now,
+    index: true,
   },
 });
 

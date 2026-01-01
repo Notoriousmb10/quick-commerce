@@ -15,7 +15,8 @@ export const placeOrder = async (req: AuthRequest, res: Response) => {
     const createdOrder = await orderService.placeOrder(
       (req.user as any).id,
       items,
-      deliveryLocation
+      deliveryLocation,
+      req.body.couponCode
     );
 
     const io = req.app.get("io");

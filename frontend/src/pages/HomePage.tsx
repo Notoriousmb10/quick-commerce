@@ -98,7 +98,7 @@ const HomePage = () => {
           <img
             src={DeliveryRider}
             alt="Delivery Rider"
-            className="hero-image"
+            className="hero-image-home"
           />
         </div>
       </section>

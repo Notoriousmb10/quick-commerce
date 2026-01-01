@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--background-base);
   position: relative;
   overflow: hidden;
 }
@@ -23,13 +22,11 @@
 }
 
 .auth-container::before {
-  background: rgba(239, 68, 68, 0.1); /* Red tint */
   top: -50px;
   left: -50px;
 }
 
 .auth-container::after {
-  background: rgba(16, 185, 129, 0.1); /* Green tint */
   bottom: -50px;
   right: -50px;
   animation-delay: -5s;

@@ -138,15 +138,20 @@
 .hero-image-container {
   flex: 1;
   display: flex;
+  border-radius: 20px;
   justify-content: flex-end;
+  overflow: hidden; 
 }
 
-.hero-image {
+.hero-image-home {
   max-width: 100%;
   width: 500px; /* Adjust based on image */
   height: auto;
   border-radius: 20px; /* Optional rounded corners suitable for hero */
+  transform: scale(1.3);
+  transform-origin: bottom;
 }
+
 
 
 /* --- How It Works Section --- */

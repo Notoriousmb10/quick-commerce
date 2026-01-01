@@ -6,7 +6,8 @@ import { IOrder } from "../models/Order";
 const placeOrder = async (
   userId: string,
   items: PlaceOrderItemDto[],
-  deliveryLocation: { address: string }
+  deliveryLocation: { address: string },
+  couponCode?: string
 ): Promise<IOrder | null> => {
   let totalAmount = 0;
   const processedItems = [];
@@ -32,13 +33,28 @@ const placeOrder = async (
     });
   }
 
-  const orderData = {
+  const orderData: any = {
     customer: userId as any,
     items: processedItems,
-    totalAmount,
     deliveryLocation,
+    couponCode,
+    discountAmount: 0,
     history: [{ status: "placed", updatedBy: userId as any }],
   };
+
+  if (couponCode === "WELCOME50") {
+    const existingOrders = await orderRepository.findByCustomer(userId);
+    if (existingOrders.length === 0) {
+      let discount = totalAmount * 0.5;
+      if (discount > 100) discount = 100;
+      totalAmount -= discount;
+      orderData.discountAmount = discount;
+    } else {
+      throw new Error("Coupon valid only for first order");
+    }
+  }
+
+  orderData.totalAmount = totalAmount;
 
   const createdOrder = await orderRepository.create(orderData as any);
   return await orderRepository.findByIdPopulated(

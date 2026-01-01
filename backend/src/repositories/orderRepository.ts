@@ -31,7 +31,15 @@ const findAllAdmin = async (): Promise<IOrder[]> => {
 };
 
 const findAvailableForPartners = async (): Promise<IOrder[]> => {
-  return await Order.find({ status: "placed" })
+  const now = new Date();
+  const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+  return await Order.find({
+    status: "placed",
+    createdAt: {
+      $gte: oneHourAgo,
+      $lte: now,
+    },
+  })
     .populate("customer", "name")
     .populate("items.product", "name")
     .sort({ createdAt: 1 });
