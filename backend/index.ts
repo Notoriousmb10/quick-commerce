@@ -11,6 +11,7 @@ import authRoutes from "./src/routes/authRoutes";
 import productRoutes from "./src/routes/productRoutes";
 import orderRoutes from "./src/routes/orderRoutes";
 import userRoutes from "./src/routes/userRoutes";
+import restaurantRoutes from "./src/routes/restaurantRoutes";
 
 const app = express();
 const server = http.createServer(app);
@@ -53,6 +54,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/restaurants", restaurantRoutes);
 
 const PORT = process.env.PORT || 5000;
 

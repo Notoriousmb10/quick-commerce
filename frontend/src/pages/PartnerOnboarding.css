@@ -66,7 +66,7 @@
 }
 
 .hero-text h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #1c1c1c;
   margin-bottom: 1rem;
@@ -241,7 +241,7 @@
   color: #333;
 }
 
-.form-input, .form-select, .form-textarea {
+.partner-form-input, .partner-form-select, .partner-form-textarea {
   padding: 0.8rem;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -249,7 +249,7 @@
   background: #fff;
 }
 
-.form-textarea {
+.partner-form-textarea {
   min-height: 100px;
   resize: vertical;
 }

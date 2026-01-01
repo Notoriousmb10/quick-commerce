@@ -44,12 +44,11 @@
   font-size: 1rem;
 }
 
-/* --- Hero Section --- */
 .hero-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4rem 1.5rem 6rem; /* Extra bottom padding */
+  padding: 4rem 1.5rem 6rem;
   max-width: 1200px;
   margin: 0 auto;
   gap: 2rem;

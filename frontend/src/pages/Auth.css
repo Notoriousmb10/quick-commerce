@@ -98,7 +98,7 @@
 
 .input-icon {
   position: absolute;
-  left: 1rem;
+  left: 1.2rem; /* Adjusted icon position slightly */
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
@@ -161,7 +161,7 @@
   background: #fff;
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  padding: 1rem 1rem 1rem 3rem;
+  padding: 1rem 1rem 1rem 3.5rem;
   color: var(--text-primary);
   font-size: 1rem;
   appearance: none;

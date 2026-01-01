@@ -469,3 +469,130 @@
       font-size: 0.75rem;
   }
 }
+
+/* New 2-Column Layout Styles */
+.dashboard-layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 2rem;
+  padding: 2rem;
+  position: relative;
+}
+
+.dashboard-sidebar-wrapper {
+  flex: 0 0 250px; /* Fixed width sidebar */
+  position: sticky;
+  top: 100px; /* Offset for header */
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  border-right: 1px solid #f0f0f0;
+  padding-right: 1rem;
+}
+
+.dashboard-main-content {
+  flex: 1;
+  min-width: 0; /* Prevent overflow */
+}
+
+/* Sidebar Component Styles */
+.category-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+}
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-gray);
+}
+
+.sidebar-item:hover {
+  background: #fff5f2;
+  color: var(--primary);
+}
+
+.sidebar-item.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 82, 0, 0.2);
+}
+
+.sidebar-img-wrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #eee;
+  flex-shrink: 0;
+}
+
+.sidebar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.category-section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  color: var(--text-dark);
+}
+
+/* Hide original category section in new layout logic if needed, 
+   or just don't render it in the component */
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  
+  .dashboard-sidebar-wrapper {
+    position: relative;
+    top: 0;
+    height: auto;
+    width: 100%;
+    flex: none;
+    border-right: none;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 1rem;
+    padding-right: 0;
+  }
+
+  .sidebar-list {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .sidebar-item {
+    flex-shrink: 0;
+    padding: 0.5rem 1rem;
+  }
+}
